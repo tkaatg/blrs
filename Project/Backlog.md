@@ -8,8 +8,8 @@ Ce document contient le découpage en Epics, Features et User Stories pour impor
 **Définition :** Mise en place de l'environnement technique de base et des services cloud.
 
 ### Feature 1.1 : Setup Technique
-- **US 1.1.1 :** En tant que développeur, je veux initialiser le projet Flutter avec une architecture propre (Folder structure) afin de faciliter la maintenance. (✅ FAIT)
-- **US 1.1.2 :** En tant que développeur, je veux lier le projet à Firebase (Auth, Firestore) pour gérer la persistance des données. (⏳ EN COURS)
+- **US 1.1.1 :** En tant que développeur, je veux initialiser le projet Flutter avec une architecture propre (Folder structure) afin de faciliter la maintenance. 
+- **US 1.1.2 :** En tant que développeur, je veux lier le projet à Firebase (Auth, Firestore) pour gérer la persistance des données.
 - **US 1.1.3 :** En tant que développeur, je veux configurer les environnements (Dev, Staging, Prod) pour sécuriser les déploiements.
 
 ---

@@ -1,22 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'config/app_config.dart';
+import 'services/auth_service.dart';
+import 'models/player_model.dart';
+import 'screens/main_screen.dart';
 
-/// The core logic to start the app, used by different environment entry points.
 void bootstrap() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Note: For now, we use the same Firebase options for all envs.
-  // In a real multi-project setup, each env file would provide its options.
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   
-  runApp(const BLRSApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        Provider<AuthService>(create: (_) => AuthService()),
+        StreamProvider<Player?>(
+          create: (context) => context.read<AuthService>().playerStream,
+          initialData: null,
+        ),
+      ],
+      child: const BLRSApp(),
+    ),
+  );
 }
 
-// Fallback main for standard run
 void main() {
   AppConfig.initialize(
     AppConfig(
@@ -49,28 +60,60 @@ class BLRSApp extends StatelessWidget {
           surface: const Color(0xFFFFB900),
         ),
       ),
-      home: Scaffold(
-        backgroundColor: Colors.white,
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.traffic_rounded, size: 100, color: Theme.of(context).primaryColor),
-              const SizedBox(height: 20),
-              Text(
-                config.appName,
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFFF25022),
-                ),
+      home: const AuthWrapper(),
+    );
+  }
+}
+
+class AuthWrapper extends StatelessWidget {
+  const AuthWrapper({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final player = Provider.of<Player?>(context);
+    final authService = Provider.of<AuthService>(context, listen: false);
+
+    // If player is not null, go to main screen
+    if (player != null) {
+      return MainScreen(player: player);
+    }
+
+    // Otherwise, sign in anonymously (Silent login)
+    return FutureBuilder(
+      future: authService.signInAnonymously(),
+      builder: (context, snapshot) {
+        return const SplashScreen();
+      },
+    );
+  }
+}
+
+class SplashScreen extends StatelessWidget {
+  const SplashScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.traffic_rounded, size: 100, color: Theme.of(context).primaryColor),
+            const SizedBox(height: 20),
+            const Text(
+              'Baby Learning Road Signs',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFFF25022),
               ),
-              const SizedBox(height: 10),
-              Text('ENV: ${config.environment.name.toUpperCase()}'),
-              const SizedBox(height: 40),
-              const CircularProgressIndicator(),
-            ],
-          ),
+            ),
+            const SizedBox(height: 10),
+            const Text('Chargement du profil...'),
+            const SizedBox(height: 40),
+            const CircularProgressIndicator(),
+          ],
         ),
       ),
     );
