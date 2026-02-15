@@ -5,7 +5,7 @@ import 'firebase_options.dart';
 import 'config/app_config.dart';
 import 'services/auth_service.dart';
 import 'models/player_model.dart';
-import 'screens/main_screen.dart';
+import 'screens/board_game_screen.dart';
 
 void bootstrap() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -73,9 +73,9 @@ class AuthWrapper extends StatelessWidget {
     final player = Provider.of<Player?>(context);
     final authService = Provider.of<AuthService>(context, listen: false);
 
-    // If player is not null, go to main screen
+    // If player is not null, go to board game screen
     if (player != null) {
-      return MainScreen(player: player);
+      return BoardGameScreen(player: player);
     }
 
     // Otherwise, sign in anonymously (Silent login)

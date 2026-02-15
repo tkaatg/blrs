@@ -1,0 +1,77 @@
+# Ergo Design System - Baby Learning Road Signs (BLRS)
+
+- **Role :** UX/UI Senior Director
+- **Version :** 1.0
+- **Objectif :** Établir les standards d'ergonomie et de design pour une accessibilité maximale aux jeunes enfants (3-7 ans).
+- **Philosophie :** "Jouer pour apprendre, sans frustration."
+
+---
+
+## 1. Principes Fondamentaux de l'UX Enfant
+
+### 1.1 Simplicité Cognitive
+- **Zéro Texte Vital :** L'enfant doit pouvoir jouer sans savoir lire. Les instructions passent par l'icône, la couleur et le son.
+- **Chemin Unique :** Éviter les menus imbriqués. L'interface doit être linéaire (Plateau > Niveau > Quiz > Résultat).
+- **Iconographie Littérale :** Utiliser des symboles universels et figuratifs (ex: une étoile pour la monnaie, un haut-parleur pour le son).
+
+### 1.2 Accessibilité Motrice
+- **Hit Zones XXL :** Les boutons doivent avoir une zone tactile minimale de **80x80 pixels**.
+- **Gestes Simples :** Prioriser le "Tap" simple. Éviter le "Long Press" ou le "Drag & Drop" complexe qui peut être frustrant pour les petites mains.
+- **Zones de Repos :** Laisser des marges pour éviter les clics accidentels lors de la manipulation de la tablette/smartphone.
+
+### 1.3 Feedback & Gratification
+- **Réaction Immédiate :** Chaque action doit déclencher une réaction visuelle (animation) et sonore (sfx).
+- **Renforcement Positif :** Même en cas d'erreur, le feedback doit être doux ("Oups !") et non punitif. Les victoires doivent être célébrées (fanfares, pluie d'étoiles).
+
+---
+
+## 2. Charte Graphique (UI System)
+
+### 2.1 Palette de Couleurs (PRD Compliance)
+| Couleur | Code Hex | Usage | Psychologie |
+| :--- | :--- | :--- | :--- |
+| **Orange** | `#F25022` | Actions principales (Play, Next) | Énergie, Excitation |
+| **Vert** | `#7FBA00` | Validation, Succès, Niveaux réussis | Sécurité, Nature |
+| **Bleu** | `#00A4EF` | Fond, Boutons secondaires | Calme, Confiance |
+| **Jaune** | `#FFB900` | Étoiles, Indices, Attention | Joie, Récompense |
+
+### 2.2 Typographie
+- **Police :** `Outfit` ou `Roboto Rounded` (ou équivalent sans empattement aux bords arrondis).
+- **Taille :** Minimum 18pt pour le corps, 32pt pour les titres.
+- **Style :** Éviter l'italique ou les polices trop scriptées. Préférer le gras (Bold) pour la lisibilité.
+
+---
+
+## 3. Composants Standards
+
+### 3.1 Les Boutons "Kid-Friendly"
+- **Bords Arrondis :** Rayon de courbure de 24px minimum pour un aspect "jouet".
+- **Effet 3D/Ombre :** Légère ombre portée vers le bas pour indiquer qu'on peut appuyer dessus (affordance).
+- **États :**
+    - `Normal` : Couleur vive.
+    - `Pressed` : Zoom arrière (0.95) + assombrissement.
+    - `Disabled` : Gris clair, opacité réduite.
+
+### 3.2 Bornes de Niveaux (Milestones)
+- Diamètre : 100px.
+- Contenu : Chiffre large et lisible.
+- Indicateur de statut : Halo lumineux pour le niveau "Actuel".
+
+---
+
+## 4. Patterns de Navigation
+
+- **Navigation Verticale :** Pour le Board Game, le défilement se fait de bas en haut (ascension).
+- **Transitions :** Fondus enchaînés doux ou "slide" latéral. Pas de coupures brutes.
+- **Indicateurs de Progression :** Une barre de progression visuelle simple (ex: une petite voiture qui avance sur une ligne).
+
+---
+
+## 5. Checklist d'Accessibilité "Kids"
+- [ ] Le bouton "Retour" est toujours en haut à gauche et bien large.
+- [ ] Aucune publicité n'apparaît de manière impromptue (uniquement Rewarded Ads déclenchées par l'enfant/parent).
+- [ ] Les sons peuvent être coupés facilement depuis l'accueil.
+- [ ] Les formes géométriques sont contrastées par rapport au fond.
+
+---
+*Ce document sert de guide de référence pour toute implémentation technique et design futur.*
