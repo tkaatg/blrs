@@ -1,127 +1,237 @@
 import 'package:flutter/material.dart';
+import 'dart:ui';
 import '../models/level_model.dart';
 import '../models/player_model.dart';
 import '../widgets/level_node.dart';
 import '../widgets/road_painter.dart';
+import '../widgets/mascot_widget.dart';
+import '../widgets/top_view_car.dart';
+import '../services/utils/road_path_builder.dart';
 
-class BoardGameScreen extends StatelessWidget {
+class BoardGameScreen extends StatefulWidget {
   final Player player;
 
   const BoardGameScreen({super.key, required this.player});
 
   @override
+  State<BoardGameScreen> createState() => _BoardGameScreenState();
+}
+
+class _BoardGameScreenState extends State<BoardGameScreen> with SingleTickerProviderStateMixin {
+  late AnimationController _carController;
+  late Animation<double> _carAnimation;
+  double _carPositionPercentage = 0.0;
+  double _carRotation = 0.0;
+  Offset _carOffset = Offset.zero;
+  
+  double _startPercent = 0.0;
+  double _targetPercent = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _carController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2000),
+    );
+
+    _carAnimation = CurvedAnimation(
+      parent: _carController,
+      curve: Curves.easeInOutCubic,
+    );
+
+    _carController.addListener(_updateCarPosition);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initCarPosition();
+    });
+  }
+
+  void _initCarPosition() {
+    if (widget.player.statsLevels.isEmpty) {
+      _carPositionPercentage = 0.0;
+    } else {
+      int lastDone = widget.player.maxLevelUnlocked - 1;
+      _carPositionPercentage = _getPercentForLevel(lastDone > 0 ? lastDone : 1);
+    }
+    _updatePositionFromPercent(_carPositionPercentage);
+  }
+
+  double _getPercentForLevel(int levelId) {
+    double targetTop = 0.98 - ((levelId - 1) * 0.1);
+    double targetY = 3600 * targetTop;
+    return (4050 - targetY) / 4050;
+  }
+
+  void _updateCarPosition() {
+    double currentPercent = _startPercent + (_targetPercent - _startPercent) * _carAnimation.value;
+    _updatePositionFromPercent(currentPercent);
+  }
+
+  void _updatePositionFromPercent(double percent) {
+    final size = Size(MediaQuery.of(context).size.width, 4000);
+    final path = RoadPathBuilder.buildRoadPath(size);
+    final metrics = path.computeMetrics().toList();
+    
+    if (metrics.isNotEmpty) {
+      final metric = metrics.first;
+      final distance = metric.length * percent.clamp(0.0, 1.0);
+      final tangent = metric.getTangentForOffset(distance);
+      
+      if (tangent != null) {
+        setState(() {
+          _carOffset = tangent.position;
+          _carRotation = -tangent.angle + (3.14159 / 2); 
+        });
+      }
+    }
+  }
+
+  void _animateToLevel(int levelId) {
+    _startPercent = _carPositionPercentage;
+    _targetPercent = _getPercentForLevel(levelId);
+    
+    _carController.forward(from: 0.0).then((_) {
+      _carPositionPercentage = _targetPercent;
+      print('Arrived at level $levelId - Launching Quiz');
+    });
+  }
+
+  @override
+  void dispose() {
+    _carController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // Mock level data - this will eventually come from the player object/service
     final List<LevelStatus> levels = List.generate(10, (index) {
       int levelId = index + 1;
       LevelState state = LevelState.locked;
       int score = 0;
 
-      if (player.unlockedLevels.contains(levelId)) {
-        state = player.statsLevels.containsKey('level_$levelId') 
+      if (widget.player.unlockedLevels.contains(levelId)) {
+        state = widget.player.statsLevels.containsKey('level_$levelId') 
             ? LevelState.completed 
             : LevelState.available;
-        score = player.statsLevels['level_$levelId'] ?? 0;
+        score = widget.player.statsLevels['level_$levelId'] ?? 0;
       }
 
       return LevelStatus(
         id: levelId,
         state: state,
         score: score,
-        isCurrent: levelId == player.maxLevelUnlocked,
+        isCurrent: levelId == widget.player.maxLevelUnlocked,
       );
     });
 
     return Scaffold(
-      backgroundColor: const Color(0xFF8BC34A), // Natural Grass Green
       body: Stack(
         children: [
-          // Background decorations (could be images later)
           Positioned.fill(
-            child: CustomPaint(
-              painter: RoadPainter(),
+            child: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0xFF7CB342), 
+                    Color(0xFF9CCC65), 
+                    Color(0xFF8BC34A),
+                  ],
+                ),
+              ),
             ),
           ),
           
-          // Levels mapped along the path
           SingleChildScrollView(
-            reverse: true, // Start at the bottom
+            reverse: true,
             child: Container(
-              height: 1200, // Fixed height for the winding road
-              padding: const EdgeInsets.symmetric(vertical: 100),
+              height: 4000, 
+              width: double.infinity,
               child: Stack(
+                clipBehavior: Clip.none,
                 children: [
-                   _buildLevelPositioned(levels[0], left: 0.5, top: 0.9),
-                   _buildLevelPositioned(levels[1], left: 0.7, top: 0.8),
-                   _buildLevelPositioned(levels[2], left: 0.6, top: 0.7),
-                   _buildLevelPositioned(levels[3], left: 0.3, top: 0.6),
-                   _buildLevelPositioned(levels[4], left: 0.2, top: 0.5),
-                   _buildLevelPositioned(levels[5], left: 0.4, top: 0.4),
-                   _buildLevelPositioned(levels[6], left: 0.7, top: 0.3),
-                   _buildLevelPositioned(levels[7], left: 0.8, top: 0.2),
-                   _buildLevelPositioned(levels[8], left: 0.6, top: 0.1),
-                   _buildLevelPositioned(levels[9], left: 0.5, top: 0.0),
+                   Positioned.fill(
+                     child: CustomPaint(
+                       painter: RoadPainter(),
+                     ),
+                   ),
+
+                   _buildDecor(context, Icons.park_rounded, Colors.green[900]!, left: 0.85, top: 0.96),
+                   _buildDecor(context, Icons.home_rounded, Colors.brown[400]!, left: 0.1, top: 0.92),
+                   
+                   _buildMascot(context, MascotType.rondy, left: 0.85, top: 0.82),
+                   _buildDecor(context, Icons.cottage_rounded, Colors.red[300]!, left: 0.15, top: 0.85),
+                   
+                   _buildDecor(context, Icons.forest_rounded, Colors.green[800]!, left: 0.88, top: 0.72),
+                   _buildMascot(context, MascotType.carrevite, left: 0.1, top: 0.72),
+                   
+                   _buildDecor(context, Icons.home_work_rounded, Colors.blue[300]!, left: 0.85, top: 0.62),
+                   
+                   _buildDecor(context, Icons.park_outlined, Colors.green[700]!, left: 0.12, top: 0.54),
+                   _buildDecor(context, Icons.castle_rounded, Colors.orange[300]!, left: 0.1, top: 0.38),
+                   _buildMascot(context, MascotType.trigo, left: 0.9, top: 0.32),
+                   
+                   _buildDecor(context, Icons.church_rounded, Colors.grey[400]!, left: 0.75, top: 0.18),
+
+                   _buildLevelPositioned(context, levels[0], left: 0.20, top: 0.98),
+                   _buildLevelPositioned(context, levels[1], left: 0.80, top: 0.88),
+                   _buildLevelPositioned(context, levels[2], left: 0.20, top: 0.78),
+                   _buildLevelPositioned(context, levels[3], left: 0.80, top: 0.68),
+                   _buildLevelPositioned(context, levels[4], left: 0.20, top: 0.58),
+                   _buildLevelPositioned(context, levels[5], left: 0.80, top: 0.48),
+                   _buildLevelPositioned(context, levels[6], left: 0.20, top: 0.38),
+                   _buildLevelPositioned(context, levels[7], left: 0.80, top: 0.28),
+                   _buildLevelPositioned(context, levels[8], left: 0.20, top: 0.18),
+                   _buildLevelPositioned(context, levels[9], left: 0.80, top: 0.08),
+
+                   Positioned(
+                     left: _carOffset.dx - 15,
+                     top: _carOffset.dy - 25,
+                     child: Transform.rotate(
+                       angle: _carRotation,
+                       child: const TopViewCarWidget(size: 50),
+                     ),
+                   ),
                 ],
               ),
             ),
           ),
-
-          // Top Overlay (Stats)
-          Positioned(
-            top: 40,
-            left: 20,
-            right: 20,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildStatChip(context, Icons.person, player.pseudo),
-                _buildStatChip(context, Icons.star, '${player.stars}', color: Colors.amber),
-              ],
-            ),
-          ),
         ],
       ),
     );
   }
 
-  Widget _buildLevelPositioned(LevelStatus level, {required double left, required double top}) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return Positioned(
-          left: constraints.maxWidth * left - 50, // Center the 100px node
-          top: 1000 * top,
-          child: LevelNode(
-            level: level,
-            onTap: () {
-              print('Level ${level.id} tapped');
-              // Navigate to Quiz Screen (US 2.3.x)
-            },
-          ),
-        );
-      },
+  Widget _buildLevelPositioned(BuildContext context, LevelStatus level, {required double left, required double top}) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    return Positioned(
+      left: screenWidth * left - 50,
+      top: 3600 * top, 
+      child: LevelNode(
+        level: level,
+        onTap: () {
+          _animateToLevel(level.id);
+        },
+      ),
     );
   }
 
-  Widget _buildStatChip(BuildContext context, IconData icon, String label, {Color? color}) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(30),
-        boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 4),
-        ],
-      ),
-      child: Row(
-        children: [
-          Icon(icon, color: color ?? Theme.of(context).primaryColor, size: 20),
-          const SizedBox(width: 8),
-          Text(
-            label,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ],
-      ),
+  Widget _buildDecor(BuildContext context, IconData icon, Color color, {required double left, required double top}) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    return Positioned(
+      left: screenWidth * left - 20,
+      top: 3600 * top,
+      child: Icon(icon, color: color, size: 50),
+    );
+  }
+
+  Widget _buildMascot(BuildContext context, MascotType type, {required double left, required double top}) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    return Positioned(
+      left: screenWidth * left - 30,
+      top: 3600 * top,
+      child: MascotWidget(type: type, size: 50),
     );
   }
 }

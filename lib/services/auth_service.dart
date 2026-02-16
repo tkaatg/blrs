@@ -22,8 +22,7 @@ class AuthService {
     });
   }
 
-  /// Sign in anonymously and create a profile if it doesn't exist
-  Future<User?> signInAnonymously() async {
+  Future<String?> signInAnonymously() async {
     try {
       final credential = await _auth.signInAnonymously();
       final user = credential.user;
@@ -32,11 +31,10 @@ class AuthService {
         final playerDoc = await _db.collection('players').doc(user.uid).get();
         
         if (!playerDoc.exists) {
-          // Create initial profile
           final newPlayer = Player(
             uid: user.uid,
             pseudo: PseudoGenerator.generate(),
-            stars: 1500, // Initial balance from PRD
+            stars: 1500,
             points: 0,
             createdAt: DateTime.now(),
           );
@@ -44,10 +42,13 @@ class AuthService {
           await _db.collection('players').doc(user.uid).set(newPlayer.toFirestore());
         }
       }
-      return user;
+      return null; // Success
+    } on FirebaseAuthException catch (e) {
+      print('Auth Error: ${e.code} - ${e.message}');
+      return e.message ?? e.code;
     } catch (e) {
-      print('Auth Error: $e');
-      return null;
+      print('Generic Auth Error: $e');
+      return e.toString();
     }
   }
 

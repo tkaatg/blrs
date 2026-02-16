@@ -57,21 +57,42 @@
 - Contenu : Chiffre large et lisible.
 - Indicateur de statut : Halo lumineux pour le niveau "Actuel".
 
+### 3.3 Mascottes "Les Formes Rigolotes"
+Pour humaniser l'apprentissage, l'application utilise trois personnages récurrents :
+- **Rondy (Rouge) :** Un cercle rouge avec des bras fins et un grand sourire.
+- **Carré-Vite (Bleu) :** Un carré bleu un peu timide mais très savant.
+- **Trigo (Jaune) :** Un triangle jaune dynamique et farceur.
+- *Usage :* Ils apparaissent le long de la route pour encourager l'enfant et servent de base aux questions de quiz.
+
+### 3.4 Décor Cartoon (Environment)
+- **Richesse Visuelle :** La route ne doit pas être déserte. Elle traverse des micro-environnements :
+    - Zones urbaines (Petites maisons colorées).
+    - Zones nature (Arbres ronds, fleurs).
+    - Signalisation (Panneaux indicateurs amusants).
+- **Parallaxe :** Les éléments de décor bougent à des vitesses différentes pour créer de la profondeur.
+
 ---
 
-## 4. Patterns de Navigation
+## 6. Structure de Navigation Globale (Premium UI)
 
-- **Navigation Verticale :** Pour le Board Game, le défilement se fait de bas en haut (ascension).
-- **Transitions :** Fondus enchaînés doux ou "slide" latéral. Pas de coupures brutes.
-- **Indicateurs de Progression :** Une barre de progression visuelle simple (ex: une petite voiture qui avance sur une ligne).
+Inspiré des meilleurs jeux casuals, l'application utilise une barre de navigation basse (Bottom Navigation) pour un accès rapide aux fonctions clés.
 
----
+### 6.1 Bottom Navigation Bar
+- **Boutique (Shop) :** Accès aux achats in-app. Icône de coffre ou de stand de marché. Badge rouge pour les promotions.
+- **Accueil (Home/Board) :** L'onglet central. Icône de maison ou de route. C'est le plateau de jeu principal.
+- **Ami·es (Social/Rank) :** Classement et aspect social. Icône de personnages.
+- **Paramètres (Settings) :** Réglages techniques. Icône d'engrenage.
 
-## 5. Checklist d'Accessibilité "Kids"
-- [ ] Le bouton "Retour" est toujours en haut à gauche et bien large.
-- [ ] Aucune publicité n'apparaît de manière impromptue (uniquement Rewarded Ads déclenchées par l'enfant/parent).
-- [ ] Les sons peuvent être coupés facilement depuis l'accueil.
-- [ ] Les formes géométriques sont contrastées par rapport au fond.
+### 6.2 Top Bar "Resource Header"
+Fixe en haut de l'écran sur la plupart des pages :
+- **Avatar/Pseudo :** Accès au profil.
+- **Étoiles :** Affichage de la monnaie avec un bouton **(+)** vert pour achat direct.
+- **Bouton No-Ads :** Un petit raccourci (icône TV barrée) pour supprimer les publicités en un clic.
+
+### 6.3 Style "Bubbly/Glossy"
+- **Gradients :** Utiliser des dégradés linéaires doux.
+- **Bordures :** Bordures blanches épaisses (2-3px) autour des boutons pour les faire ressortir.
+- **Gloss :** Un reflet blanc semi-transparent sur la moitié supérieure des gros boutons et éléments de monnaie.
 
 ---
 *Ce document sert de guide de référence pour toute implémentation technique et design futur.*

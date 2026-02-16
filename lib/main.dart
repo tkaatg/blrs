@@ -5,7 +5,7 @@ import 'firebase_options.dart';
 import 'config/app_config.dart';
 import 'services/auth_service.dart';
 import 'models/player_model.dart';
-import 'screens/board_game_screen.dart';
+import 'screens/main_navigation_screen.dart'; // Changed from board_game_screen.dart
 
 void bootstrap() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -65,25 +65,136 @@ class BLRSApp extends StatelessWidget {
   }
 }
 
-class AuthWrapper extends StatelessWidget {
+class AuthWrapper extends StatefulWidget {
   const AuthWrapper({super.key});
+
+  @override
+  State<AuthWrapper> createState() => _AuthWrapperState();
+}
+
+class _AuthWrapperState extends State<AuthWrapper> {
+  String? _error;
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _attemptSignIn();
+  }
+
+  Future<void> _attemptSignIn() async {
+    final authService = Provider.of<AuthService>(context, listen: false);
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+
+    final error = await authService.signInAnonymously();
+    
+    if (mounted) {
+      setState(() {
+        _error = error;
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final player = Provider.of<Player?>(context);
-    final authService = Provider.of<AuthService>(context, listen: false);
 
-    // If player is not null, go to board game screen
     if (player != null) {
-      return BoardGameScreen(player: player);
+      return MainNavigationScreen(player: player);
     }
 
-    // Otherwise, sign in anonymously (Silent login)
-    return FutureBuilder(
-      future: authService.signInAnonymously(),
-      builder: (context, snapshot) {
-        return const SplashScreen();
-      },
+    if (_error != null) {
+      // Fallback for visual testing if Firestore is persistent offline
+      if (_error!.contains('offline') || _error!.contains('unavailable')) {
+        return Scaffold(
+          body: Stack(
+            children: [
+              MainNavigationScreen(
+                player: Player(
+                  uid: 'debug',
+                  pseudo: 'DEMO_PLAYER',
+                  stars: 1500,
+                  points: 0,
+                  createdAt: DateTime.now(),
+                  unlockedLevels: [1],
+                  statsLevels: {},
+                ),
+              ),
+              Positioned(
+                bottom: 20,
+                left: 20,
+                right: 20,
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  color: Colors.black54,
+                  child: const Text(
+                    'MODE DÉMO (Firestore Offline)',
+                    style: TextStyle(color: Colors.white, fontSize: 10),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      }
+      
+      return ErrorScreen(
+        message: _error!,
+        onRetry: _attemptSignIn,
+      );
+    }
+
+    return const SplashScreen();
+  }
+}
+
+class ErrorScreen extends StatelessWidget {
+  final String message;
+  final VoidCallback onRetry;
+
+  const ErrorScreen({super.key, required this.message, required this.onRetry});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.error_outline, color: Colors.red, size: 80),
+              const SizedBox(height: 20),
+              const Text(
+                'Oups ! Un petit problème...',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                message,
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.grey),
+              ),
+              const SizedBox(height: 30),
+              ElevatedButton.icon(
+                onPressed: onRetry,
+                icon: const Icon(Icons.refresh),
+                label: const Text('Réessayer'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFF25022),
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

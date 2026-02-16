@@ -21,13 +21,14 @@ Ce document contient le découpage en Epics, Features et User Stories pour impor
 - **US 2.1.1 :** En tant qu'utilisateur, je veux être connecté automatiquement de façon anonyme afin de commencer à jouer sans formulaire.
 
 ### Feature 2.2 : Menu Principal & Progression (Board Game)
-- **US 2.2.1 :** En tant qu'enfant, je veux voir une route sinueuse avec des niveaux numérotés pour comprendre ma progression.
+- [DONE] **US 2.2.0 :** En tant qu'utilisateur, je veux naviguer entre la boutique, le jeu et les réglages via une barre de navigation basse colorée. (Premium UI)
+- [BLOCKED] **US 2.2.1 :** En tant qu'enfant, je veux voir une route sinueuse avec des niveaux numérotés pour comprendre ma progression.
 - **US 2.2.2 :** En tant qu'enfant, je veux voir le statut de mes niveaux (Rouge/Jaune/Vert) selon mes scores précédents.
 - **US 2.2.3 :** En tant qu'enfant, je veux dépenser des étoiles pour débloquer un niveau verrouillé.
 
 ### Feature 2.3 : Mécanique de Jeu (Quiz)
-- **US 2.3.1 :** En tant qu'enfant, je veux voir une animation de voiture qui s'arrête devant un panneau pour introduire la question.
-- **US 2.3.2 :** En tant qu'enfant, je veux choisir la forme correspondante au panneau parmi 3 options pour tester mes connaissances.
+- [DONE] **US 2.3.1 :** En tant qu'enfant, je veux voir une animation de voiture qui s'arrête devant un panneau pour introduire la question.
+- [IN PROGRESS] **US 2.3.2 :** En tant qu'enfant, je veux choisir la forme correspondante au panneau parmi 3 options pour tester mes connaissances.
 - **US 2.3.3 :** En tant qu'enfant, je veux voir un minuteur de 15 secondes pour ajouter du challenge.
 - **US 2.3.4 :** En tant qu'enfant, je veux utiliser un indice (supprimer des réponses) en échange d'étoiles ou d'une publicité.
 
@@ -59,8 +60,8 @@ Ce document contient le découpage en Epics, Features et User Stories pour impor
 **Définition :** Boutique et réglages.
 
 ### Feature 5.1 : Boutique (Shop)
-- **US 5.1.1 :** En tant qu'utilisateur, je veux acheter des packs d'étoiles avec de l'argent réel.
-- **US 5.1.2 :** En tant qu'utilisateur, je veux m'abonner pour supprimer les publicités.
+- [DONE] **US 5.1.1 :** En tant qu'utilisateur, je veux voir des packs d'étoiles avec un design premium (Bubbly) pour m'inciter à l'achat.
+- [DONE] **US 5.1.2 :** En tant qu'utilisateur, je veux voir une offre pour supprimer les publicités de manière permanente ou temporaire.
 
 ### Feature 5.2 : Paramètres
 - **US 5.2.1 :** En tant qu'utilisateur, je veux changer mon pseudo auto-généré.

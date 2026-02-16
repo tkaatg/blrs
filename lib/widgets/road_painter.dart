@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
+import '../services/utils/road_path_builder.dart';
 
 class RoadPainter extends CustomPainter {
   @override
@@ -15,22 +16,7 @@ class RoadPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 4;
 
-    final path = Path();
-    
-    // Bottom start
-    path.moveTo(size.width / 2, size.height + 50);
-
-    // Winding path (S-shape)
-    path.cubicTo(
-      size.width * 0.9, size.height * 0.75,
-      size.width * 0.1, size.height * 0.5,
-      size.width / 2, size.height * 0.4,
-    );
-    path.cubicTo(
-      size.width * 0.9, size.height * 0.3,
-      size.width * 0.1, size.height * 0.1,
-      size.width / 2, -50,
-    );
+    final path = RoadPathBuilder.buildRoadPath(size);
 
     canvas.drawPath(path, paint);
 
