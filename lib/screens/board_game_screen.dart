@@ -1,106 +1,106 @@
 import 'package:flutter/material.dart';
-import 'dart:ui';
 import '../models/level_model.dart';
 import '../models/player_model.dart';
 import '../widgets/level_node.dart';
-import '../widgets/road_painter.dart';
-import '../widgets/mascot_widget.dart';
-import '../widgets/top_view_car.dart';
-import '../services/utils/road_path_builder.dart';
+import 'quiz_screen.dart';
 
 class BoardGameScreen extends StatefulWidget {
   final Player player;
+  final Function(int)? onLevelSelected;
+  final VoidCallback? onShopRequested;
 
-  const BoardGameScreen({super.key, required this.player});
+  const BoardGameScreen({
+    super.key,
+    required this.player,
+    this.onLevelSelected,
+    this.onShopRequested,
+  });
 
   @override
-  State<BoardGameScreen> createState() => _BoardGameScreenState();
+  State<BoardGameScreen> createState() => BoardGameScreenState();
 }
 
-class _BoardGameScreenState extends State<BoardGameScreen> with SingleTickerProviderStateMixin {
-  late AnimationController _carController;
-  late Animation<double> _carAnimation;
-  double _carPositionPercentage = 0.0;
-  double _carRotation = 0.0;
-  Offset _carOffset = Offset.zero;
-  
-  double _startPercent = 0.0;
-  double _targetPercent = 0.0;
+class BoardGameScreenState extends State<BoardGameScreen> {
+  // Mapping coordinates used for levels
+  final List<Map<String, double>> _levelCoords = [
+    {'left': 0.605, 'top': 0.930}, // L1
+    {'left': 0.770, 'top': 0.835}, // L2
+    {'left': 0.435, 'top': 0.790}, // L3
+    {'left': 0.220, 'top': 0.675}, // L4
+    {'left': 0.585, 'top': 0.620}, // L5
+    {'left': 0.775, 'top': 0.505}, // L6
+    {'left': 0.485, 'top': 0.425}, // L7
+    {'left': 0.245, 'top': 0.335}, // L8
+    {'left': 0.725, 'top': 0.255}, // L9
+    {'left': 0.500, 'top': 0.045}, // L10
+  ];
 
-  @override
-  void initState() {
-    super.initState();
-    _carController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 2000),
-    );
-
-    _carAnimation = CurvedAnimation(
-      parent: _carController,
-      curve: Curves.easeInOutCubic,
-    );
-
-    _carController.addListener(_updateCarPosition);
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _initCarPosition();
-    });
-  }
-
-  void _initCarPosition() {
-    if (widget.player.statsLevels.isEmpty) {
-      _carPositionPercentage = 0.0;
-    } else {
-      int lastDone = widget.player.maxLevelUnlocked - 1;
-      _carPositionPercentage = _getPercentForLevel(lastDone > 0 ? lastDone : 1);
+  void _onLevelTap(LevelStatus level, double boardHeight) {
+    if (level.state == LevelState.locked) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Niveau verrouillé. Débloque d\'abord le niveau ${widget.player.maxLevelUnlocked}'))
+      );
+      return;
     }
-    _updatePositionFromPercent(_carPositionPercentage);
-  }
 
-  double _getPercentForLevel(int levelId) {
-    double targetTop = 0.98 - ((levelId - 1) * 0.1);
-    double targetY = 3600 * targetTop;
-    return (4050 - targetY) / 4050;
-  }
+    int levelId = level.id;
+    bool isFree = widget.player.statsLevels['level_$levelId'] == 10;
 
-  void _updateCarPosition() {
-    double currentPercent = _startPercent + (_targetPercent - _startPercent) * _carAnimation.value;
-    _updatePositionFromPercent(currentPercent);
-  }
-
-  void _updatePositionFromPercent(double percent) {
-    final size = Size(MediaQuery.of(context).size.width, 4000);
-    final path = RoadPathBuilder.buildRoadPath(size);
-    final metrics = path.computeMetrics().toList();
-    
-    if (metrics.isNotEmpty) {
-      final metric = metrics.first;
-      final distance = metric.length * percent.clamp(0.0, 1.0);
-      final tangent = metric.getTangentForOffset(distance);
-      
-      if (tangent != null) {
-        setState(() {
-          _carOffset = tangent.position;
-          _carRotation = -tangent.angle + (3.14159 / 2); 
-        });
-      }
+    if (!isFree && widget.player.stars < 500) {
+      _showNotEnoughStarsDialog();
+      return;
     }
+
+    _showStartLevelDialog(levelId, isFree, boardHeight);
   }
 
-  void _animateToLevel(int levelId) {
-    _startPercent = _carPositionPercentage;
-    _targetPercent = _getPercentForLevel(levelId);
-    
-    _carController.forward(from: 0.0).then((_) {
-      _carPositionPercentage = _targetPercent;
-      print('Arrived at level $levelId - Launching Quiz');
-    });
-  }
-
-  @override
-  void dispose() {
-    _carController.dispose();
-    super.dispose();
+  void _showStartLevelDialog(int levelId, bool isFree, double boardHeight) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: const Color(0xFF004D40),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        title: Text('Lancer le niveau $levelId ?',
+          textAlign: TextAlign.center,
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.play_circle_fill, color: Colors.amber, size: 80),
+            const SizedBox(height: 16),
+            Text(
+              isFree
+                  ? 'Tu as déjà réussi ce niveau avec 10/10 ! Tu peux le refaire gratuitement pour t\'entraîner.'
+                  : 'Coût : 500 étoiles',
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.white70, fontSize: 16),
+            ),
+          ],
+        ),
+        actionsAlignment: MainAxisAlignment.spaceEvenly,
+        actions: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.amber,
+              minimumSize: const Size(200, 50),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+              if (!isFree) {
+                setState(() {
+                  widget.player.stars -= 500;
+                });
+              }
+              if (widget.onLevelSelected != null) {
+                widget.onLevelSelected!(levelId);
+              }
+            },
+            child: const Text('C\'EST PARTI !', style: TextStyle(color: Color(0xFF004D40), fontWeight: FontWeight.bold)),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -111,8 +111,8 @@ class _BoardGameScreenState extends State<BoardGameScreen> with SingleTickerProv
       int score = 0;
 
       if (widget.player.unlockedLevels.contains(levelId)) {
-        state = widget.player.statsLevels.containsKey('level_$levelId') 
-            ? LevelState.completed 
+        state = widget.player.statsLevels.containsKey('level_$levelId')
+            ? LevelState.completed
             : LevelState.available;
         score = widget.player.statsLevels['level_$levelId'] ?? 0;
       }
@@ -126,112 +126,130 @@ class _BoardGameScreenState extends State<BoardGameScreen> with SingleTickerProv
     });
 
     return Scaffold(
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color(0xFF7CB342), 
-                    Color(0xFF9CCC65), 
-                    Color(0xFF8BC34A),
-                  ],
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final double screenWidth = constraints.maxWidth;
+          final double boardWidth = screenWidth > 600 ? 600 : screenWidth;
+          final double boardHeight = boardWidth * 4.0;
+
+
+          return Stack(
+            children: [
+              Positioned.fill(
+                child: Container(color: const Color(0xFF8BC34A)),
+              ),
+              Center(
+                child: SizedBox(
+                  width: boardWidth,
+                  child: SingleChildScrollView(
+                    reverse: true,
+                    child: Container(
+                      height: boardHeight,
+                      width: boardWidth,
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          Positioned.fill(
+                            child: Column(
+                              children: [
+                                Image.asset('assets/images/board_background.png', width: boardWidth, fit: BoxFit.fitWidth),
+                                Image.asset('assets/images/board_background.png', width: boardWidth, fit: BoxFit.fitWidth),
+                                Image.asset('assets/images/board_background.png', width: boardWidth, fit: BoxFit.fitWidth),
+                                Image.asset('assets/images/board_background.png', width: boardWidth, fit: BoxFit.fitWidth),
+                              ],
+                            ),
+                          ),
+                          
+                          // Draw levels
+                          ...List.generate(10, (idx) {
+                            final coord = _levelCoords[idx];
+                            return _buildLevelPositioned(
+                              context, 
+                              boardWidth, 
+                              boardHeight, 
+                              levels[idx], 
+                              left: coord['left']!, 
+                              top: coord['top']!
+                            );
+                          }),
+
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildLevelPositioned(BuildContext context, double boardWidth, double boardHeight, LevelStatus level, {required double left, required double top}) {
+    return Positioned(
+      left: boardWidth * left - 45,
+      top: boardHeight * top,
+      child: LevelNode(
+        level: level,
+        onTap: () {
+          _onLevelTap(level, boardHeight);
+        },
+      ),
+    );
+  }
+
+  void _showNotEnoughStarsDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        backgroundColor: const Color(0xFF004D40),
+        title: const Text('Oups !', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: const [
+            Icon(Icons.star, color: Colors.amber, size: 60),
+            SizedBox(height: 16),
+            Text(
+              'Il te faut 500 étoiles pour commencer un quiz !',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white, fontSize: 16),
             ),
-          ),
-          
-          SingleChildScrollView(
-            reverse: true,
-            child: Container(
-              height: 4000, 
-              width: double.infinity,
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: [
-                   Positioned.fill(
-                     child: CustomPaint(
-                       painter: RoadPainter(),
-                     ),
-                   ),
-
-                   _buildDecor(context, Icons.park_rounded, Colors.green[900]!, left: 0.85, top: 0.96),
-                   _buildDecor(context, Icons.home_rounded, Colors.brown[400]!, left: 0.1, top: 0.92),
-                   
-                   _buildMascot(context, MascotType.rondy, left: 0.85, top: 0.82),
-                   _buildDecor(context, Icons.cottage_rounded, Colors.red[300]!, left: 0.15, top: 0.85),
-                   
-                   _buildDecor(context, Icons.forest_rounded, Colors.green[800]!, left: 0.88, top: 0.72),
-                   _buildMascot(context, MascotType.carrevite, left: 0.1, top: 0.72),
-                   
-                   _buildDecor(context, Icons.home_work_rounded, Colors.blue[300]!, left: 0.85, top: 0.62),
-                   
-                   _buildDecor(context, Icons.park_outlined, Colors.green[700]!, left: 0.12, top: 0.54),
-                   _buildDecor(context, Icons.castle_rounded, Colors.orange[300]!, left: 0.1, top: 0.38),
-                   _buildMascot(context, MascotType.trigo, left: 0.9, top: 0.32),
-                   
-                   _buildDecor(context, Icons.church_rounded, Colors.grey[400]!, left: 0.75, top: 0.18),
-
-                   _buildLevelPositioned(context, levels[0], left: 0.20, top: 0.98),
-                   _buildLevelPositioned(context, levels[1], left: 0.80, top: 0.88),
-                   _buildLevelPositioned(context, levels[2], left: 0.20, top: 0.78),
-                   _buildLevelPositioned(context, levels[3], left: 0.80, top: 0.68),
-                   _buildLevelPositioned(context, levels[4], left: 0.20, top: 0.58),
-                   _buildLevelPositioned(context, levels[5], left: 0.80, top: 0.48),
-                   _buildLevelPositioned(context, levels[6], left: 0.20, top: 0.38),
-                   _buildLevelPositioned(context, levels[7], left: 0.80, top: 0.28),
-                   _buildLevelPositioned(context, levels[8], left: 0.20, top: 0.18),
-                   _buildLevelPositioned(context, levels[9], left: 0.80, top: 0.08),
-
-                   Positioned(
-                     left: _carOffset.dx - 15,
-                     top: _carOffset.dy - 25,
-                     child: Transform.rotate(
-                       angle: _carRotation,
-                       child: const TopViewCarWidget(size: 50),
-                     ),
-                   ),
-                ],
-              ),
+          ],
+        ),
+        actionsAlignment: MainAxisAlignment.center,
+        actions: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.amber,
+              minimumSize: const Size(200, 50),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))
             ),
+            onPressed: () {
+              Navigator.pop(context);
+              if (widget.onShopRequested != null) {
+                widget.onShopRequested!();
+              }
+            },
+            child: const Text('Gagner des étoiles', style: TextStyle(color: Color(0xFF004D40), fontWeight: FontWeight.bold)),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildLevelPositioned(BuildContext context, LevelStatus level, {required double left, required double top}) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    return Positioned(
-      left: screenWidth * left - 50,
-      top: 3600 * top, 
-      child: LevelNode(
-        level: level,
-        onTap: () {
-          _animateToLevel(level.id);
-        },
-      ),
+  void playLastAvailableLevel() {
+    int levelId = widget.player.maxLevelUnlocked;
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double boardWidth = screenWidth > 600 ? 600 : screenWidth;
+    final double boardHeight = boardWidth * 4.0; 
+    
+    // Find the current level object to check its state
+    final level = LevelStatus(
+      id: levelId,
+      state: widget.player.unlockedLevels.contains(levelId) ? LevelState.available : LevelState.locked,
     );
-  }
-
-  Widget _buildDecor(BuildContext context, IconData icon, Color color, {required double left, required double top}) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    return Positioned(
-      left: screenWidth * left - 20,
-      top: 3600 * top,
-      child: Icon(icon, color: color, size: 50),
-    );
-  }
-
-  Widget _buildMascot(BuildContext context, MascotType type, {required double left, required double top}) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    return Positioned(
-      left: screenWidth * left - 30,
-      top: 3600 * top,
-      child: MascotWidget(type: type, size: 50),
-    );
+    _onLevelTap(level, boardHeight);
   }
 }

@@ -4,11 +4,31 @@ import '../models/player_model.dart';
 import 'utils/pseudo_generator.dart';
 
 class AuthService {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  FirebaseAuth get _auth => FirebaseAuth.instance;
+  FirebaseFirestore get _db => FirebaseFirestore.instance;
+  
+  // Set to true to bypass Firebase completely and use offline mock data
+  static bool useMockMode = true; 
 
   /// Stream of the current player data
   Stream<Player?> get playerStream {
+    if (useMockMode) {
+      return Stream.value(Player(
+        uid: 'mock_uid',
+        pseudo: 'LAPIN1234', 
+        stars: 1500,
+        points: 0,
+        createdAt: DateTime.now(),
+        unlockedLevels: [1],
+        maxLevelUnlocked: 1,
+        statsLevels: {},
+        bestPointsByLevel: {},
+        avatarId: 'circle',
+        musicEnabled: true,
+        sfxEnabled: true,
+      ));
+    }
+
     return _auth.authStateChanges().asyncMap((user) async {
       if (user == null) return null;
       
@@ -23,6 +43,12 @@ class AuthService {
   }
 
   Future<String?> signInAnonymously() async {
+    if (useMockMode) {
+      // Simulate small delay for splash screen visibility
+      await Future.delayed(const Duration(milliseconds: 500));
+      return null;
+    }
+
     try {
       final credential = await _auth.signInAnonymously();
       final user = credential.user;
@@ -37,6 +63,13 @@ class AuthService {
             stars: 1500,
             points: 0,
             createdAt: DateTime.now(),
+            unlockedLevels: [1],
+            maxLevelUnlocked: 1,
+            statsLevels: {},
+            bestPointsByLevel: {},
+            avatarId: 'circle',
+            musicEnabled: true,
+            sfxEnabled: true,
           );
           
           await _db.collection('players').doc(user.uid).set(newPlayer.toFirestore());

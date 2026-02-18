@@ -6,13 +6,13 @@ class RoadPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = const Color(0xFF4A4A4A) // Dark gray bitumen
+      ..color = const Color(0xFFE0C9A6) // Sand color
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 70
+      ..strokeWidth = 80 // Broader road
       ..strokeCap = StrokeCap.round;
 
     final dashPaint = Paint()
-      ..color = Colors.white.withOpacity(0.8)
+      ..color = const Color(0xFF8D6E63).withOpacity(0.4) // Subtle dark brown dashes
       ..style = PaintingStyle.stroke
       ..strokeWidth = 4;
 

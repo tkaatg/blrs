@@ -6,33 +6,28 @@
 
 ---
 
-## 1. Conception Visuelle (Ergo-Focus)
-Conformément aux recommandations du Directeur UX :
-- **La Route :** Un tracé sinueux (S-shape) qui guide l'œil du bas vers le haut. Couleur gris bitume avec des lignes pointillées blanches au centre.
-- **Le Décor :** Fond vert "Herbe" avec des éléments décoratifs simples (arbres, fleurs cartoon) pour éviter le vide.
+## 1. Conception Visuelle (Premium Casual)
+Conformément aux nouvelles orientations Design :
+- **Le Fond :** Image premium haute résolution (`board_background.png`) répétée verticalement deux fois pour couvrir les 10 niveaux.
+- **La Route :** Fait partie intégrante de l'image de fond (style terre battue/sable).
+- **Le Décor :** Arbres, rivières et clôtures inclus dans l'asset graphique pour un rendu "fait main".
 - **Les Bornes (Niveaux 1 à 10) :** 
     - Cercles larges (100px) avec bordure blanche épaisse.
     - Numérotés de 1 à 10.
-    - États visuels :
-        - **Locked (Gris) :** Icône de cadenas si le niveau n'est pas accessible.
-        - **Score Rouge (0-2) :** Fond rouge, 1 étoile affichée.
-        - **Score Jaune (3-4) :** Fond jaune, 2 étoiles affichées.
-        - **Score Vert (5/5) :** Fond vert, 3 étoiles affichées.
-        - **Actuel (Halo) :** Animation de pulsation sur le niveau à jouer.
+    - Alignés manuellement sur les courbes de la route visuelle.
 
 ---
 
-## 2. Architecture Technique
+## 2. Architecture Technique & Responsivité
 
 ### 2.1 Composants Flutter
-- `BoardGameScreen` : Scaffold principal avec fond décoratif.
-- `RoadPainter` : Un `CustomPainter` utilisant un `Path` de Bézier pour dessiner la route sinueuse de manière fluide.
-- `LevelNode` : Widget personnalisé pour chaque borne de niveau. Il prend en paramètre un `LevelStatus` (modèle à créer).
+- `BoardGameScreen` : Scaffold principal. Utilise `LayoutBuilder` pour adapter la largeur.
+- **Responsive Wrap :** Le plateau est centré et limité à **600px de large** maximum pour assurer la cohérence sur tablette.
+- **Background Junction :** Utilisation d'un dégradé de transition (`LinearGradient`) pour masquer la couture entre les deux images répétées.
 
-### 2.2 Calcul des Positions
-Pour que la route et les bornes soient alignées, nous utiliserons un algorithme de positionnement sinusoïdal :
-- `X = Center + amplitude * sin(y / frequency)`
-- Chaque borne $i$ sera placée à une hauteur relative $Y_i$ sur ce chemin.
+### 2.2 Positionnement Dynamique
+- `RoadPathBuilder` : Fournit un `Path` invisible calculé pour suivre les virages de l'image de fond. Utilisé pour l'animation de la voiture.
+- **Scaling Factor :** Les positions des niveaux sont relatives à la largeur du plateau (boardWidth) pour rester alignées lors du redimensionnement.
 
 ---
 

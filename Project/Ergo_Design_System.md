@@ -50,7 +50,7 @@
 - **États :**
     - `Normal` : Couleur vive.
     - `Pressed` : Zoom arrière (0.95) + assombrissement.
-    - `Disabled` : Gris clair, opacité réduite.
+- **Paramètres / Cartes :** Rayon de courbure de **20px** pour une cohérence visuelle "Premium Toy".
 
 ### 3.2 Bornes de Niveaux (Milestones)
 - Diamètre : 100px.
@@ -95,4 +95,13 @@ Fixe en haut de l'écran sur la plupart des pages :
 - **Gloss :** Un reflet blanc semi-transparent sur la moitié supérieure des gros boutons et éléments de monnaie.
 
 ---
-*Ce document sert de guide de référence pour toute implémentation technique et design futur.*
+
+## 7. Support Appareils & Responsivité
+
+### 7.1 Orientation Unique : Portrait
+- L'application est exclusivement conçue pour le mode **Portrait**. Le mode paysage est désactivé pour simplifier la navigation de l'enfant et optimiser l'affichage vertical de la route.
+
+### 7.2 Mise à l'échelle Adaptive (Mobile & Tablette)
+- **Largeur Max (Tablette) :** Sur tablette, le plateau de jeu ne doit pas s'étirer à l'infini. Il est centré avec une largeur maximale de **600px** pour conserver l'aspect "Board Game".
+- **Unités Relatives :** Toutes les positions (Boutons, Voiture, Mascottes) sont calculées en pourcentage de la largeur/hauteur du plateau (Scaling Factor) pour garantir un alignement parfait peu importe la densité de pixels de l'écran.
+- **Header/Footer :** Les barres de navigation s'adaptent en Largeur (Fill) tandis que le contenu central reste proportionnel.

@@ -1,37 +1,107 @@
 import 'package:flutter/material.dart';
 import '../models/player_model.dart';
 import '../widgets/bubbly_button.dart';
+import '../widgets/bubbly_title.dart';
+import 'dart:async';
 
-class ShopScreen extends StatelessWidget {
+class ShopScreen extends StatefulWidget {
   final Player player;
+  final Function(int)? onPurchaseComplete;
 
-  const ShopScreen({super.key, required this.player});
+  const ShopScreen({super.key, required this.player, this.onPurchaseComplete});
+
+  @override
+  State<ShopScreen> createState() => _ShopScreenState();
+}
+
+class _ShopScreenState extends State<ShopScreen> {
+  bool _showingAd = false;
+  String? _adMessage;
+
+  void _simulateAd(String message, int starsToGain) {
+    setState(() {
+      _showingAd = true;
+      _adMessage = message;
+    });
+
+    Timer(const Duration(seconds: 2), () {
+      if (mounted) {
+        setState(() {
+          _showingAd = false;
+        });
+        if (widget.onPurchaseComplete != null) {
+          widget.onPurchaseComplete!(starsToGain);
+        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Achat réussi : + $starsToGain étoiles !'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF004D40), // Dark teal background typical of game sub-menus
-      appBar: AppBar(
-        title: const Text('Boutique', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            // Promo Banner: No-Ads
-            _buildPromoCard(),
-            const SizedBox(height: 24),
-            
-            // Star Packages
-            _buildShopItem(context, '1000 Étoiles', '1,99 €', Icons.star, Colors.amber),
-            _buildShopItem(context, '5000 Étoiles', '8,99 €', Icons.star, Colors.amber, hasBonus: true, bonusDesc: '1 Jour Sans Pub'),
-            _buildShopItem(context, '10000 Étoiles', '17,99 €', Icons.star, Colors.amber, hasBonus: true, bonusDesc: '3 Jours Sans Pub'),
-            _buildShopItem(context, '50000 Étoiles', '59,99 €', Icons.star, Colors.amber, hasBonus: true, bonusDesc: '14 Jours Sans Pub'),
-          ],
-        ),
+      backgroundColor: const Color(0xFF00382B), // Harmonisé avec Settings
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+            child: Column(
+              children: [
+                const SizedBox(height: 110),
+                const BubblyTitle(title: 'Boutique'),
+                const SizedBox(height: 30),
+                
+                // Promo Banner: No-Ads
+                _buildPromoCard(),
+                const SizedBox(height: 24),
+
+                // Free Stars via Ad
+                _buildFreeStarsCard(context),
+                const SizedBox(height: 16),
+                
+                // Star Packages
+                _buildShopItem(context, '1000 Étoiles', '1,99 €', 1000),
+                _buildShopItem(context, '3000 Étoiles', '4,99 €', 3000),
+                _buildShopItem(context, '5000 Étoiles', '6,99 €', 5000, hasBonus: true, bonusDesc: '1 Jour Sans Pub'),
+                _buildShopItem(context, '10000 Étoiles', '11,99 €', 10000, hasBonus: true, bonusDesc: '3 Jours Sans Pub'),
+                
+                const SizedBox(height: 40),
+              ],
+            ),
+          ),
+
+          // AD SIMULATION OVERLAY
+          if (_showingAd)
+            Positioned.fill(
+              child: Container(
+                color: Colors.black.withOpacity(0.9),
+                child: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const CircularProgressIndicator(color: Colors.amber),
+                      const SizedBox(height: 20),
+                      Text(
+                        _adMessage ?? 'CHARGEMENT DE LA PUBLICITÉ...',
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 10),
+                      const Text(
+                        '(Simulation pour la démo - 2 secondes)',
+                        style: TextStyle(color: Colors.white54, fontSize: 12),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }
@@ -52,10 +122,10 @@ class ShopScreen extends StatelessWidget {
               children: [
                 const Text('Supprimer pubs', style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold, fontSize: 18)),
                 const SizedBox(height: 4),
-                const Text('Jouez 30 jours sans pubs !', style: TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.w600)),
+                const Text('Jouez 7 jours sans pub !', style: TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.w600)),
                 const SizedBox(height: 12),
                 BubblyButton(
-                  onTap: () {},
+                  onTap: () => _simulateAd('OFFRE SANS PUB ACTIVÉE !', 0),
                   color: Colors.blue,
                   child: const Text('1,99 €', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                 ),
@@ -63,7 +133,6 @@ class ShopScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 16),
-          // TV Icon with No-Ads
           Stack(
             alignment: Alignment.center,
             children: [
@@ -81,7 +150,39 @@ class ShopScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildShopItem(BuildContext context, String title, String price, IconData icon, Color color, {bool hasBonus = false, String? bonusDesc}) {
+  Widget _buildFreeStarsCard(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.deepPurple[100],
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.white, width: 2),
+      ),
+      child: Row(
+        children: [
+          const Icon(Icons.play_circle_fill_rounded, color: Colors.deepPurple, size: 40),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Text('Étoiles gratuites', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                Text('Regarde une pub pour gagner 500 étoiles !', style: TextStyle(fontSize: 12)),
+              ],
+            ),
+          ),
+          BubblyButton(
+            onTap: () => _simulateAd('CHARGEMENT DE LA VIDÉO...', 500),
+            color: Colors.deepPurple,
+            width: 100,
+            child: const Text('VOIR', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildShopItem(BuildContext context, String title, String price, int stars, {bool hasBonus = false, String? bonusDesc}) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -92,7 +193,7 @@ class ShopScreen extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(icon, color: color, size: 40),
+          const Icon(Icons.star, color: Colors.amber, size: 40),
           const SizedBox(width: 16),
           Expanded(
             child: Column(
@@ -105,7 +206,7 @@ class ShopScreen extends StatelessWidget {
             ),
           ),
           BubblyButton(
-            onTap: () {},
+            onTap: () => _simulateAd('FINALISATION DE L\'ACHAT...', stars),
             color: Colors.cyan[400]!,
             width: 100,
             child: Text(price, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
@@ -114,9 +215,4 @@ class ShopScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-// Simple Helper for AppBar spacing
-extension AppBarSpacer on AppBar {
-  static final double height = 56.0;
 }

@@ -5,14 +5,20 @@ import 'firebase_options.dart';
 import 'config/app_config.dart';
 import 'services/auth_service.dart';
 import 'models/player_model.dart';
-import 'screens/main_navigation_screen.dart'; // Changed from board_game_screen.dart
+import 'screens/main_navigation_screen.dart';
+import 'services/sign_service.dart';
 
 void bootstrap() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  if (!AuthService.useMockMode) {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  }
+
+  // Load CSV signs data
+  await SignService.loadSigns();
   
   runApp(
     MultiProvider(
@@ -116,7 +122,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
               MainNavigationScreen(
                 player: Player(
                   uid: 'debug',
-                  pseudo: 'DEMO_PLAYER',
+                  pseudo: 'PLAYER',
                   stars: 1500,
                   points: 0,
                   createdAt: DateTime.now(),

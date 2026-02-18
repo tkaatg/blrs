@@ -47,25 +47,36 @@ Create a fun, engaging, and educational experience that teaches children aged 7 
 - **Unlocking Cost:** 500 stars (free if already played).
 - **Level States:** Visual color-coding based on previous performance (Red: 0-2 correct, Yellow: 3-4, Green: 5).
 
-### 5.3 Level Mechanics
-- **Animation Phase:** A horizontal scrolling car animation that stops at a road sign.
-- **Question Phase:**
-    - Question: "Which shape corresponds to this sign?"
-    - 1 image (sign) + 3 shape buttons (1 correct, 2 distractors).
-    - Timer: 15 seconds.
-    - Points: Time remaining × 100.
-- **Hints & Retries:**
-    - Hint (removes distractors): 20 stars or watch 1 rewarded ad.
-    - Retry (after error): 25 stars or watch 1 rewarded ad.
-    - Add Time (+10s): 50 stars or watch 1 rewarded ad.
+### 5.3 Level Mechanics (Quiz)
+- **Phase Animation :** La voiture arrive sur le niveau -> Transition vers l'écran de quiz.
+- **Phase Question :**
+    - Un arrière-plan illustré plein écran (Ville & Route) pour une immersion maximale.
+    - Panneau affiché dans un encart arrondi à droite.
+    - Question : "Quelle forme est associée à ce panneau ?"
+    - 3 options de formes en bas (Garanties : la bonne réponse est TOUJOURS présente).
+    - Compteur numérique (décompte).
+- **Navigation & Sortie :**
+    - La barre de navigation est verrouillée pendant le quiz. Le bouton central devient **Rouge** avec un halo lumineux.
+    - Quitter nécessite une confirmation ; les étoiles consommées (500) sont perdues en cas d'abandon.
+- **Récompenses & Rejouabilité :**
+    - Les niveaux réussis avec 10/10 sont rejouables gratuitement (sans gain d'étoiles).
+    - Redirection automatique vers la boutique si le solde d'étoiles est insuffisant (< 500).
+- **Phase Résultat :**
+    - Bilan détaillé des 10 questions avec points gagnés/perdus.
+    - Bouton "Retour" vers la carte.
 
 ### 5.4 Social & Competition
 - **Leaderboard:** Dynamic Top 20 based on max level reached, then total points.
 - **Personal Ranking:** Display the user's specific rank even if outside the Top 20.
 
 ### 5.5 Monetization (The Shop)
-- **Star Packs:** 1000 stars (1.99€), 2000 stars (2.99€), 3000 stars (3.99€).
-- **No-Ads Subscription:** 1 week (1.99€), 1 month (5.49€), 3 months (7.99€).
+- **Star Packs:** 
+    - 1000 étoiles (1,99€)
+    - 3000 étoiles (4,99€)
+    - 5000 étoiles (6,99€ + 1 jour sans pub)
+    - 10000 étoiles (11,99€ + 3 jours sans pub)
+- **No-Ads Bundle:** 
+    - 7 jours sans pub (1,99€)
 
 ### 5.6 Audio & Multimedia
 - **Background Music:** Soft, upbeat, and child-friendly background music (royalty-free).
@@ -90,8 +101,11 @@ Create a fun, engaging, and educational experience that teaches children aged 7 
 
 ### 6.3 Technical Constraints
 - Built with **Flutter** for cross-platform compatibility.
-- **Firebase Firestore** for real-time data and leaderboard.
-- **Firebase Auth** for anonymous user tracking.
+- **Orientation:** **Portrait mode ONLY** for optimized vertical road layout and child ergonomics.
+- **Responsiveness:** Full support for Smartphones and Tablets.
+    - **Tablet Rule:** Content is centered and constrained to a **600px width maximum** to preserve casual game aesthetics.
+- **Data:** **Firebase Firestore** for real-time data and leaderboard.
+- **Auth:** **Firebase Auth** for anonymous user tracking.
 
 ---
 

@@ -192,8 +192,9 @@ Inspiration :
 
 Responsive :
 
-- Mobile et tablette
-- iOS et Android
+- Mobile et tablette (iOS et Android)
+- **Orientation :** Portrait uniquement (fixé logiciellement)
+- **Adaptation Tablette :** Largeur maximale de contenu fixée à **600px** pour le plateau de jeu afin de préserver l'ergonomie.
 
 __Règles de Développement__
 

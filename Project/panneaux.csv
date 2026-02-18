@@ -1,0 +1,108 @@
+panneauId;imageUrl;contentImageUrl;categoryId;formeId;libelle
+RS_002;assets/images/panneaux/RS_002.png;assets/images/panneaux/RS_002q.png;B1;interdiction;Sens interdit à tout véhicule
+RS_003;assets/images/panneaux/RS_003.png;assets/images/panneaux/RS_003q.png;B1;interdiction_barre;Interdiction de tourner à gauche à la phochaine intersection
+RS_004;assets/images/panneaux/RS_004.png;assets/images/panneaux/RS_004q.png;B1;interdiction_barre;Interdiction de tourner à droite à la phochaine intersection
+RS_005;assets/images/panneaux/RS_005.png;assets/images/panneaux/RS_005q.png;B1;interdiction_barre;Interdiction de faire demi-tour sur la route suivie jusqu’à la prochaine intersection
+RS_006;assets/images/panneaux/RS_006.png;assets/images/panneaux/RS_006q.png;B1;interdiction;Interdiction de dépasser tous les véhicules à moteur autres que ceux à deux roues sans side-car
+RS_007;assets/images/panneaux/RS_007.png;assets/images/panneaux/RS_007q.png;B1;interdiction;Interdiction aux véhicules de transports de marchandises de doubler
+RS_008;assets/images/panneaux/RS_008.png;assets/images/panneaux/RS_008q.png;B1;interdiction;Arrêt au poste de douane
+RS_009;assets/images/panneaux/RS_009.png;assets/images/panneaux/RS_009q.png;B1;interdiction;Arrêt au poste de gendarmerie
+RS_010;assets/images/panneaux/RS_010.png;assets/images/panneaux/RS_010q.png;B1;interdiction;Arrêt au poste de police
+RS_011;assets/images/panneaux/RS_011.png;assets/images/panneaux/RS_011q.png;B1;interdiction;Arrêt au poste de péage
+RS_014;assets/images/panneaux/RS_014.png;assets/images/panneaux/RS_014q.png;B1;interdiction_barre;Accès interdit aux véhicules à moteur à l’exception des cyclomoteurs
+RS_015;assets/images/panneaux/RS_015.png;assets/images/panneaux/RS_015q.png;B1;interdiction_barre;Accès interdit à tous les véhicules à moteur
+RS_016;assets/images/panneaux/RS_016.png;assets/images/panneaux/RS_016q.png;B1;interdiction;Accès interdit aux véhicules affectés au transport de marchandises
+RS_017;assets/images/panneaux/RS_017.png;assets/images/panneaux/RS_017q.png;B1;interdiction;Accès interdit aux piétons
+RS_018;assets/images/panneaux/RS_018.png;assets/images/panneaux/RS_018q.png;B1;interdiction;Accès interdit aux cycles
+RS_019;assets/images/panneaux/RS_019.png;assets/images/panneaux/RS_019q.png;B1;interdiction;Accès interdit aux véhicules à traction animale
+RS_020;assets/images/panneaux/RS_020.png;assets/images/panneaux/RS_020q.png;B1;interdiction;Accès interdit aux véhicules agricoles à moteur
+RS_022;assets/images/panneaux/RS_022.png;assets/images/panneaux/RS_022q.png;B1;interdiction;Accès interdit aux véhicules de transport en commun de personnes
+RS_023;assets/images/panneaux/RS_023.png;assets/images/panneaux/RS_023q.png;B1;interdiction;Accès interdit aux cyclomoteurs
+RS_024;assets/images/panneaux/RS_024.png;assets/images/panneaux/RS_024q.png;B1;interdiction;Accès interdit aux motocyclettes et motocyclettes légères
+RS_025;assets/images/panneaux/RS_025.png;assets/images/panneaux/RS_025q.png;B1;interdiction;Accès interdit aux véhicules tractant une caravane ou une remorque de plus de 250 kg
+RS_026;assets/images/panneaux/RS_026.png;assets/images/panneaux/RS_026q.png;B1;interdiction;Accès interdit aux véhicules dont la longueur est supérieure au nombre indiqué
+RS_027;assets/images/panneaux/RS_027.png;assets/images/panneaux/RS_027q.png;B1;interdiction;Accès interdit aux véhicules dont la largeur, chargement compris, est supérieure au nombre indiqué
+RS_028;assets/images/panneaux/RS_028.png;assets/images/panneaux/RS_028q.png;B1;interdiction;Accès interdit aux véhicules dont la hauteur, chargement compris, est supérieure au nombre indiqué
+RS_029;assets/images/panneaux/RS_029.png;assets/images/panneaux/RS_029q.png;B1;interdiction;Accès interdit aux véhicules dont le poids total autorisé en charge ou le poids total roulant autorisé excède le nombre indiqué
+RS_030;assets/images/panneaux/RS_030.png;assets/images/panneaux/RS_030q.png;B1;interdiction;Accès interdit aux véhicules pesant sur un essieu plus que le nombre indiqué
+RS_035;assets/images/panneaux/RS_035.png;assets/images/panneaux/RS_035q.png;B1;interdiction;Limitation de vitesse à 30 km/h
+RS_038;assets/images/panneaux/RS_038.png;assets/images/panneaux/RS_038q.png;B1;interdiction;Limitation de vitesse à 50 km/h
+RS_040;assets/images/panneaux/RS_040.png;assets/images/panneaux/RS_040q.png;B1;interdiction;Limitation de vitesse à 70 km/h
+RS_041;assets/images/panneaux/RS_041.png;assets/images/panneaux/RS_041q.png;B1;interdiction;Limitation de vitesse à 80 km/h
+RS_042;assets/images/panneaux/RS_042.png;assets/images/panneaux/RS_042q.png;B1;interdiction;Limitation de vitesse à 90 km/h
+RS_043;assets/images/panneaux/RS_043.png;assets/images/panneaux/RS_043q.png;B1;interdiction;Limitation de vitesse à 110 km/h
+RS_044;assets/images/panneaux/RS_044.png;assets/images/panneaux/RS_044q.png;B1;interdiction;Limitation de vitesse à 130 km/h
+RS_045;assets/images/panneaux/RS_045.png;assets/images/panneaux/RS_045q.png;B1;interdiction;Cédez le passage à la circulation venant en sens inverse
+RS_046;assets/images/panneaux/RS_046.png;assets/images/panneaux/RS_046q.png;B1;interdiction_barre;Signaux sonores interdits
+RS_047;assets/images/panneaux/RS_047.png;assets/images/panneaux/RS_047q.png;B1;interdiction;Interdiction aux véhicules de circuler sans maintenir entre eux un intervalle au moins égal au nombre indiqué
+RS_048;assets/images/panneaux/RS_048.png;assets/images/panneaux/RS_048q.png;B1;interdiction;Accès interdit aux véhicules transportant des marchandises explosives
+RS_049;assets/images/panneaux/RS_049.png;assets/images/panneaux/RS_049q.png;B1;interdiction;Accès interdit aux véhicules transportant des marchandises susceptibles de polluer les eaux
+RS_050;assets/images/panneaux/RS_050.png;assets/images/panneaux/RS_050q.png;B1;interdiction;Accès interdit aux véhicules transportant des marchandises dangereuses
+RS_060;assets/images/panneaux/RS_060.png;assets/images/panneaux/RS_060q.png;B2;obligation;Obligation de tourner à droite avant le panneau
+RS_061;assets/images/panneaux/RS_061.png;assets/images/panneaux/RS_061q.png;B2;obligation;Obligation de tourner à gauche avant le panneau
+RS_062;assets/images/panneaux/RS_062.png;assets/images/panneaux/RS_062q.png;B2;obligation;Contournement obligatoire par la droite
+RS_063;assets/images/panneaux/RS_063.png;assets/images/panneaux/RS_063q.png;B2;obligation;Contournement obligatoire par la gauche
+RS_064;assets/images/panneaux/RS_064.png;assets/images/panneaux/RS_064q.png;B2;obligation;Direction obligatoire à la prochaine intersection : tout droit
+RS_065;assets/images/panneaux/RS_065.png;assets/images/panneaux/RS_065q.png;B2;obligation;Direction obligatoire à la prochaine intersection : à droite
+RS_066;assets/images/panneaux/RS_066.png;assets/images/panneaux/RS_066q.png;B2;obligation;Direction obligatoire à la prochaine intersection : à gauche
+RS_067;assets/images/panneaux/RS_067.png;assets/images/panneaux/RS_067q.png;B2;obligation;Directions obligatoires à la prochaine intersection : tout droit ou à droite
+RS_068;assets/images/panneaux/RS_068.png;assets/images/panneaux/RS_068q.png;B2;obligation;Directions obligatoires à la prochaine intersection : tout droit ou à gauche
+RS_069;assets/images/panneaux/RS_069.png;assets/images/panneaux/RS_069q.png;B2;obligation;Directions obligatoires à la prochaine intersection : à droite ou à gauche
+RS_070;assets/images/panneaux/RS_070.png;assets/images/panneaux/RS_070q.png;B2;obligation;Piste ou bande obligatoire pour les cycles sans side-car ou remorque
+RS_071;assets/images/panneaux/RS_071.png;assets/images/panneaux/RS_071q.png;B2;obligation;Chemin obligatoire pour piétons
+RS_072;assets/images/panneaux/RS_072.png;assets/images/panneaux/RS_072q.png;B2;obligation;Chemin obligatoire pour cavaliers
+RS_073;assets/images/panneaux/RS_073.png;assets/images/panneaux/RS_073q.png;B2;obligation;Vitesse minimale obligatoire
+RS_074;assets/images/panneaux/RS_074.png;assets/images/panneaux/RS_074q.png;B2;obligation;Chaînes à neige obligatoires sur au moins deux roues motrices
+RS_075;assets/images/panneaux/RS_075.png;assets/images/panneaux/RS_075q.png;B2;obligation;Voie réservée aux véhicules des services réguliers de transport en commun
+RS_076;assets/images/panneaux/RS_076.png;assets/images/panneaux/RS_076q.png;B2;obligation;Voie réservée aux tramways
+RS_077;assets/images/panneaux/RS_077.png;assets/images/panneaux/RS_077q.png;B2;obligation;Autres obligations dont la nature est mentionnée par une inscription sur le panneau
+RS_080;assets/images/panneaux/RS_080.png;assets/images/panneaux/RS_080q.png;B3;fin_interdiction;Fin de toutes les interdictions précédemment signalées, imposées aux véhicules en mouvement
+RS_081;assets/images/panneaux/RS_081.png;assets/images/panneaux/RS_081q.png;B3;fin_interdiction;Fin de limitation de vitesse à 30 km/h
+RS_082;assets/images/panneaux/RS_082.png;assets/images/panneaux/RS_082q.png;B3;fin_interdiction;Fin de limitation de vitesse à 50 km/h
+RS_083;assets/images/panneaux/RS_083.png;assets/images/panneaux/RS_083q.png;B3;fin_interdiction;Fin de limitation de vitesse à 70 km/h
+RS_084;assets/images/panneaux/RS_084.png;assets/images/panneaux/RS_084q.png;B3;fin_interdiction;Fin de limitation de vitesse à 110 km/h
+RS_085;assets/images/panneaux/RS_085.png;assets/images/panneaux/RS_085q.png;B3;fin_interdiction;Fin d’interdiction de dépasser
+RS_086;assets/images/panneaux/RS_086.png;assets/images/panneaux/RS_086q.png;B3;fin_interdiction;Fin d’interdiction de dépasser aux véhicules de transports de marchandises 
+RS_087;assets/images/panneaux/RS_087.png;assets/images/panneaux/RS_087q.png;B3;fin_interdiction;Fin d’interdiction de l’usage de l’avertisseur sonore
+RS_090;assets/images/panneaux/RS_090.png;assets/images/panneaux/RS_090q.png;B4;fin_obligation;Fin de piste ou bande obligatoire pour cycle
+RS_091;assets/images/panneaux/RS_091.png;assets/images/panneaux/RS_091q.png;B4;fin_obligation;Fin de chemin obligatoire pour piétons
+RS_092;assets/images/panneaux/RS_092.png;assets/images/panneaux/RS_092q.png;B4;fin_obligation;Fin de chemin obligatoire pour cavaliers
+RS_093;assets/images/panneaux/RS_093.png;assets/images/panneaux/RS_093q.png;B4;fin_obligation;Fin de vitesse minimale obligatoire
+RS_094;assets/images/panneaux/RS_094.png;assets/images/panneaux/RS_094q.png;B4;fin_obligation;Fin d’obligation de l’usage des chaînes à neige
+RS_095;assets/images/panneaux/RS_095.png;assets/images/panneaux/RS_095q.png;B4;fin_obligation;Fin de voie réservée aux véhicules de transport en commun
+RS_096;assets/images/panneaux/RS_096.png;assets/images/panneaux/RS_096q.png;B4;obligation;Fin d’obligation dont la nature est mentionnée par une inscription sur le panneau
+RS_114;assets/images/panneaux/RS_114.png;assets/images/panneaux/RS_114q.png;B5;indication;Entrée d’aire piétonne
+RS_115;assets/images/panneaux/RS_115.png;assets/images/panneaux/RS_115q.png;B5;fin_indication;Sortie d’aire piétonne
+RS_200;assets/images/panneaux/RS_200.png;assets/images/panneaux/RS_200q.png;A;danger;Virage à droite
+RS_201;assets/images/panneaux/RS_201.png;assets/images/panneaux/RS_201q.png;A;danger;Virage à gauche
+RS_202;assets/images/panneaux/RS_202.png;assets/images/panneaux/RS_202q.png;A;danger;Succession de virages à droite puis à gauche
+RS_203;assets/images/panneaux/RS_203.png;assets/images/panneaux/RS_203q.png;A;danger;Succession de virages à gauche puis à droite
+RS_204;assets/images/panneaux/RS_204.png;assets/images/panneaux/RS_204q.png;A;danger;Cassis ou dos d’âne
+RS_205;assets/images/panneaux/RS_205.png;assets/images/panneaux/RS_205q.png;A;danger;Ralentisseur de type dos-d’âne
+RS_206;assets/images/panneaux/RS_206.png;assets/images/panneaux/RS_206q.png;A;danger;Chaussée rétrécie
+RS_207;assets/images/panneaux/RS_207.png;assets/images/panneaux/RS_207q.png;A;danger;Chaussée rétrécie par la droite
+RS_208;assets/images/panneaux/RS_208.png;assets/images/panneaux/RS_208q.png;A;danger;Chaussée rétrécie par la gauche
+RS_209;assets/images/panneaux/RS_209.png;assets/images/panneaux/RS_209q.png;A;danger;Chaussée glissante
+RS_210;assets/images/panneaux/RS_210.png;assets/images/panneaux/RS_210q.png;A;danger;Pont mobile
+RS_211;assets/images/panneaux/RS_211.png;assets/images/panneaux/RS_211q.png;A;danger;Passage à niveau muni de barrières
+RS_212;assets/images/panneaux/RS_212.png;assets/images/panneaux/RS_212q.png;A;danger;Passage à niveau sans barrière
+RS_213;assets/images/panneaux/RS_213.png;assets/images/panneaux/RS_213q.png;A;danger;Traversée de voies de tramways
+RS_214;assets/images/panneaux/RS_214.png;assets/images/panneaux/RS_214q.png;A;danger;Endroit fréquenté par les enfants
+RS_215;assets/images/panneaux/RS_215.png;assets/images/panneaux/RS_215q.png;A;danger;Passage pour piétons
+RS_216;assets/images/panneaux/RS_216.png;assets/images/panneaux/RS_216q.png;A;danger;Danger
+RS_217;assets/images/panneaux/RS_217.png;assets/images/panneaux/RS_217q.png;A;danger;Passage d’animaux domestiques
+RS_218;assets/images/panneaux/RS_218.png;assets/images/panneaux/RS_218q.png;A;danger;Passage d’animaux domestiques
+RS_219;assets/images/panneaux/RS_219.png;assets/images/panneaux/RS_219q.png;A;danger;Passage d’animaux sauvages
+RS_220;assets/images/panneaux/RS_220.png;assets/images/panneaux/RS_220q.png;A;danger;Passage de cavaliers
+RS_221;assets/images/panneaux/RS_221.png;assets/images/panneaux/RS_221q.png;A;danger;Descente dangereuse
+RS_222;assets/images/panneaux/RS_222.png;assets/images/panneaux/RS_222q.png;A;danger;Feux tricolores
+RS_223;assets/images/panneaux/RS_223.png;assets/images/panneaux/RS_223q.png;A;danger;Circulation dans les deux sens
+RS_224;assets/images/panneaux/RS_224.png;assets/images/panneaux/RS_224q.png;A;danger;Risque de chutes de pierres
+RS_225;assets/images/panneaux/RS_225.png;assets/images/panneaux/RS_225q.png;A;danger;Débouché sur un quai ou une berge
+RS_226;assets/images/panneaux/RS_226.png;assets/images/panneaux/RS_226q.png;A;danger;Débouché de cyclistes
+RS_227;assets/images/panneaux/RS_227.png;assets/images/panneaux/RS_227q.png;A;danger;Traversée d'une aire de danger aérien
+RS_228;assets/images/panneaux/RS_228.png;assets/images/panneaux/RS_228q.png;A;danger;Vent latéral
+RS_250;assets/images/panneaux/RS_250.png;assets/images/panneaux/RS_250q.png;AB;danger;Priorité à droite
+RS_251;assets/images/panneaux/RS_251.png;assets/images/panneaux/RS_251q.png;AB;danger;Priorité ponctuelle
+RS_254;assets/images/panneaux/RS_254.png;assets/images/panneaux/RS_254q.png;AB;special_stop;Stop
+RS_256;assets/images/panneaux/RS_256.png;assets/images/panneaux/RS_256q.png;AB;danger;Carrefour à sens giratoire

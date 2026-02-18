@@ -1,0 +1,858 @@
+﻿[
+    {
+        "panneauId":  "RS_002",
+        "imageUrl":  "assets/images/panneaux/RS_002.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_002q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Sens interdit à tout véhicule"
+    },
+    {
+        "panneauId":  "RS_003",
+        "imageUrl":  "assets/images/panneaux/RS_003.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_003q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction_barre",
+        "libelle":  "Interdiction de tourner à gauche à la phochaine intersection"
+    },
+    {
+        "panneauId":  "RS_004",
+        "imageUrl":  "assets/images/panneaux/RS_004.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_004q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction_barre",
+        "libelle":  "Interdiction de tourner à droite à la phochaine intersection"
+    },
+    {
+        "panneauId":  "RS_005",
+        "imageUrl":  "assets/images/panneaux/RS_005.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_005q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction_barre",
+        "libelle":  "Interdiction de faire demi-tour sur la route suivie jusqu’à la prochaine intersection"
+    },
+    {
+        "panneauId":  "RS_006",
+        "imageUrl":  "assets/images/panneaux/RS_006.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_006q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Interdiction de dépasser tous les véhicules à moteur autres que ceux à deux roues sans side-car"
+    },
+    {
+        "panneauId":  "RS_007",
+        "imageUrl":  "assets/images/panneaux/RS_007.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_007q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Interdiction aux véhicules de transports de marchandises de doubler"
+    },
+    {
+        "panneauId":  "RS_008",
+        "imageUrl":  "assets/images/panneaux/RS_008.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_008q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Arrêt au poste de douane"
+    },
+    {
+        "panneauId":  "RS_009",
+        "imageUrl":  "assets/images/panneaux/RS_009.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_009q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Arrêt au poste de gendarmerie"
+    },
+    {
+        "panneauId":  "RS_010",
+        "imageUrl":  "assets/images/panneaux/RS_010.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_010q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Arrêt au poste de police"
+    },
+    {
+        "panneauId":  "RS_011",
+        "imageUrl":  "assets/images/panneaux/RS_011.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_011q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Arrêt au poste de péage"
+    },
+    {
+        "panneauId":  "RS_014",
+        "imageUrl":  "assets/images/panneaux/RS_014.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_014q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction_barre",
+        "libelle":  "Accès interdit aux véhicules à moteur à l’exception des cyclomoteurs"
+    },
+    {
+        "panneauId":  "RS_015",
+        "imageUrl":  "assets/images/panneaux/RS_015.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_015q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction_barre",
+        "libelle":  "Accès interdit à tous les véhicules à moteur"
+    },
+    {
+        "panneauId":  "RS_016",
+        "imageUrl":  "assets/images/panneaux/RS_016.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_016q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Accès interdit aux véhicules affectés au transport de marchandises"
+    },
+    {
+        "panneauId":  "RS_017",
+        "imageUrl":  "assets/images/panneaux/RS_017.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_017q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Accès interdit aux piétons"
+    },
+    {
+        "panneauId":  "RS_018",
+        "imageUrl":  "assets/images/panneaux/RS_018.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_018q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Accès interdit aux cycles"
+    },
+    {
+        "panneauId":  "RS_019",
+        "imageUrl":  "assets/images/panneaux/RS_019.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_019q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Accès interdit aux véhicules à traction animale"
+    },
+    {
+        "panneauId":  "RS_020",
+        "imageUrl":  "assets/images/panneaux/RS_020.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_020q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Accès interdit aux véhicules agricoles à moteur"
+    },
+    {
+        "panneauId":  "RS_022",
+        "imageUrl":  "assets/images/panneaux/RS_022.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_022q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Accès interdit aux véhicules de transport en commun de personnes"
+    },
+    {
+        "panneauId":  "RS_023",
+        "imageUrl":  "assets/images/panneaux/RS_023.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_023q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Accès interdit aux cyclomoteurs"
+    },
+    {
+        "panneauId":  "RS_024",
+        "imageUrl":  "assets/images/panneaux/RS_024.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_024q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Accès interdit aux motocyclettes et motocyclettes légères"
+    },
+    {
+        "panneauId":  "RS_025",
+        "imageUrl":  "assets/images/panneaux/RS_025.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_025q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Accès interdit aux véhicules tractant une caravane ou une remorque de plus de 250 kg"
+    },
+    {
+        "panneauId":  "RS_026",
+        "imageUrl":  "assets/images/panneaux/RS_026.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_026q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Accès interdit aux véhicules dont la longueur est supérieure au nombre indiqué"
+    },
+    {
+        "panneauId":  "RS_027",
+        "imageUrl":  "assets/images/panneaux/RS_027.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_027q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Accès interdit aux véhicules dont la largeur, chargement compris, est supérieure au nombre indiqué"
+    },
+    {
+        "panneauId":  "RS_028",
+        "imageUrl":  "assets/images/panneaux/RS_028.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_028q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Accès interdit aux véhicules dont la hauteur, chargement compris, est supérieure au nombre indiqué"
+    },
+    {
+        "panneauId":  "RS_029",
+        "imageUrl":  "assets/images/panneaux/RS_029.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_029q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Accès interdit aux véhicules dont le poids total autorisé en charge ou le poids total roulant autorisé excède le nombre indiqué"
+    },
+    {
+        "panneauId":  "RS_030",
+        "imageUrl":  "assets/images/panneaux/RS_030.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_030q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Accès interdit aux véhicules pesant sur un essieu plus que le nombre indiqué"
+    },
+    {
+        "panneauId":  "RS_035",
+        "imageUrl":  "assets/images/panneaux/RS_035.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_035q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Limitation de vitesse à 30 km/h"
+    },
+    {
+        "panneauId":  "RS_038",
+        "imageUrl":  "assets/images/panneaux/RS_038.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_038q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Limitation de vitesse à 50 km/h"
+    },
+    {
+        "panneauId":  "RS_040",
+        "imageUrl":  "assets/images/panneaux/RS_040.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_040q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Limitation de vitesse à 70 km/h"
+    },
+    {
+        "panneauId":  "RS_041",
+        "imageUrl":  "assets/images/panneaux/RS_041.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_041q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Limitation de vitesse à 80 km/h"
+    },
+    {
+        "panneauId":  "RS_042",
+        "imageUrl":  "assets/images/panneaux/RS_042.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_042q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Limitation de vitesse à 90 km/h"
+    },
+    {
+        "panneauId":  "RS_043",
+        "imageUrl":  "assets/images/panneaux/RS_043.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_043q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Limitation de vitesse à 110 km/h"
+    },
+    {
+        "panneauId":  "RS_044",
+        "imageUrl":  "assets/images/panneaux/RS_044.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_044q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Limitation de vitesse à 130 km/h"
+    },
+    {
+        "panneauId":  "RS_045",
+        "imageUrl":  "assets/images/panneaux/RS_045.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_045q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Cédez le passage à la circulation venant en sens inverse"
+    },
+    {
+        "panneauId":  "RS_046",
+        "imageUrl":  "assets/images/panneaux/RS_046.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_046q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction_barre",
+        "libelle":  "Signaux sonores interdits"
+    },
+    {
+        "panneauId":  "RS_047",
+        "imageUrl":  "assets/images/panneaux/RS_047.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_047q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Interdiction aux véhicules de circuler sans maintenir entre eux un intervalle au moins égal au nombre indiqué"
+    },
+    {
+        "panneauId":  "RS_048",
+        "imageUrl":  "assets/images/panneaux/RS_048.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_048q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Accès interdit aux véhicules transportant des marchandises explosives"
+    },
+    {
+        "panneauId":  "RS_049",
+        "imageUrl":  "assets/images/panneaux/RS_049.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_049q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Accès interdit aux véhicules transportant des marchandises susceptibles de polluer les eaux"
+    },
+    {
+        "panneauId":  "RS_050",
+        "imageUrl":  "assets/images/panneaux/RS_050.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_050q.png",
+        "categoryId":  "B1",
+        "formeId":  "interdiction",
+        "libelle":  "Accès interdit aux véhicules transportant des marchandises dangereuses"
+    },
+    {
+        "panneauId":  "RS_060",
+        "imageUrl":  "assets/images/panneaux/RS_060.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_060q.png",
+        "categoryId":  "B2",
+        "formeId":  "obligation",
+        "libelle":  "Obligation de tourner à droite avant le panneau"
+    },
+    {
+        "panneauId":  "RS_061",
+        "imageUrl":  "assets/images/panneaux/RS_061.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_061q.png",
+        "categoryId":  "B2",
+        "formeId":  "obligation",
+        "libelle":  "Obligation de tourner à gauche avant le panneau"
+    },
+    {
+        "panneauId":  "RS_062",
+        "imageUrl":  "assets/images/panneaux/RS_062.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_062q.png",
+        "categoryId":  "B2",
+        "formeId":  "obligation",
+        "libelle":  "Contournement obligatoire par la droite"
+    },
+    {
+        "panneauId":  "RS_063",
+        "imageUrl":  "assets/images/panneaux/RS_063.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_063q.png",
+        "categoryId":  "B2",
+        "formeId":  "obligation",
+        "libelle":  "Contournement obligatoire par la gauche"
+    },
+    {
+        "panneauId":  "RS_064",
+        "imageUrl":  "assets/images/panneaux/RS_064.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_064q.png",
+        "categoryId":  "B2",
+        "formeId":  "obligation",
+        "libelle":  "Direction obligatoire à la prochaine intersection : tout droit"
+    },
+    {
+        "panneauId":  "RS_065",
+        "imageUrl":  "assets/images/panneaux/RS_065.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_065q.png",
+        "categoryId":  "B2",
+        "formeId":  "obligation",
+        "libelle":  "Direction obligatoire à la prochaine intersection : à droite"
+    },
+    {
+        "panneauId":  "RS_066",
+        "imageUrl":  "assets/images/panneaux/RS_066.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_066q.png",
+        "categoryId":  "B2",
+        "formeId":  "obligation",
+        "libelle":  "Direction obligatoire à la prochaine intersection : à gauche"
+    },
+    {
+        "panneauId":  "RS_067",
+        "imageUrl":  "assets/images/panneaux/RS_067.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_067q.png",
+        "categoryId":  "B2",
+        "formeId":  "obligation",
+        "libelle":  "Directions obligatoires à la prochaine intersection : tout droit ou à droite"
+    },
+    {
+        "panneauId":  "RS_068",
+        "imageUrl":  "assets/images/panneaux/RS_068.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_068q.png",
+        "categoryId":  "B2",
+        "formeId":  "obligation",
+        "libelle":  "Directions obligatoires à la prochaine intersection : tout droit ou à gauche"
+    },
+    {
+        "panneauId":  "RS_069",
+        "imageUrl":  "assets/images/panneaux/RS_069.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_069q.png",
+        "categoryId":  "B2",
+        "formeId":  "obligation",
+        "libelle":  "Directions obligatoires à la prochaine intersection : à droite ou à gauche"
+    },
+    {
+        "panneauId":  "RS_070",
+        "imageUrl":  "assets/images/panneaux/RS_070.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_070q.png",
+        "categoryId":  "B2",
+        "formeId":  "obligation",
+        "libelle":  "Piste ou bande obligatoire pour les cycles sans side-car ou remorque"
+    },
+    {
+        "panneauId":  "RS_071",
+        "imageUrl":  "assets/images/panneaux/RS_071.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_071q.png",
+        "categoryId":  "B2",
+        "formeId":  "obligation",
+        "libelle":  "Chemin obligatoire pour piétons"
+    },
+    {
+        "panneauId":  "RS_072",
+        "imageUrl":  "assets/images/panneaux/RS_072.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_072q.png",
+        "categoryId":  "B2",
+        "formeId":  "obligation",
+        "libelle":  "Chemin obligatoire pour cavaliers"
+    },
+    {
+        "panneauId":  "RS_073",
+        "imageUrl":  "assets/images/panneaux/RS_073.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_073q.png",
+        "categoryId":  "B2",
+        "formeId":  "obligation",
+        "libelle":  "Vitesse minimale obligatoire"
+    },
+    {
+        "panneauId":  "RS_074",
+        "imageUrl":  "assets/images/panneaux/RS_074.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_074q.png",
+        "categoryId":  "B2",
+        "formeId":  "obligation",
+        "libelle":  "Chaînes à neige obligatoires sur au moins deux roues motrices"
+    },
+    {
+        "panneauId":  "RS_075",
+        "imageUrl":  "assets/images/panneaux/RS_075.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_075q.png",
+        "categoryId":  "B2",
+        "formeId":  "obligation",
+        "libelle":  "Voie réservée aux véhicules des services réguliers de transport en commun"
+    },
+    {
+        "panneauId":  "RS_076",
+        "imageUrl":  "assets/images/panneaux/RS_076.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_076q.png",
+        "categoryId":  "B2",
+        "formeId":  "obligation",
+        "libelle":  "Voie réservée aux tramways"
+    },
+    {
+        "panneauId":  "RS_077",
+        "imageUrl":  "assets/images/panneaux/RS_077.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_077q.png",
+        "categoryId":  "B2",
+        "formeId":  "obligation",
+        "libelle":  "Autres obligations dont la nature est mentionnée par une inscription sur le panneau"
+    },
+    {
+        "panneauId":  "RS_080",
+        "imageUrl":  "assets/images/panneaux/RS_080.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_080q.png",
+        "categoryId":  "B3",
+        "formeId":  "fin_interdiction",
+        "libelle":  "Fin de toutes les interdictions précédemment signalées, imposées aux véhicules en mouvement"
+    },
+    {
+        "panneauId":  "RS_081",
+        "imageUrl":  "assets/images/panneaux/RS_081.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_081q.png",
+        "categoryId":  "B3",
+        "formeId":  "fin_interdiction",
+        "libelle":  "Fin de limitation de vitesse à 30 km/h"
+    },
+    {
+        "panneauId":  "RS_082",
+        "imageUrl":  "assets/images/panneaux/RS_082.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_082q.png",
+        "categoryId":  "B3",
+        "formeId":  "fin_interdiction",
+        "libelle":  "Fin de limitation de vitesse à 50 km/h"
+    },
+    {
+        "panneauId":  "RS_083",
+        "imageUrl":  "assets/images/panneaux/RS_083.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_083q.png",
+        "categoryId":  "B3",
+        "formeId":  "fin_interdiction",
+        "libelle":  "Fin de limitation de vitesse à 70 km/h"
+    },
+    {
+        "panneauId":  "RS_084",
+        "imageUrl":  "assets/images/panneaux/RS_084.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_084q.png",
+        "categoryId":  "B3",
+        "formeId":  "fin_interdiction",
+        "libelle":  "Fin de limitation de vitesse à 110 km/h"
+    },
+    {
+        "panneauId":  "RS_085",
+        "imageUrl":  "assets/images/panneaux/RS_085.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_085q.png",
+        "categoryId":  "B3",
+        "formeId":  "fin_interdiction",
+        "libelle":  "Fin d’interdiction de dépasser"
+    },
+    {
+        "panneauId":  "RS_086",
+        "imageUrl":  "assets/images/panneaux/RS_086.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_086q.png",
+        "categoryId":  "B3",
+        "formeId":  "fin_interdiction",
+        "libelle":  "Fin d’interdiction de dépasser aux véhicules de transports de marchandises "
+    },
+    {
+        "panneauId":  "RS_087",
+        "imageUrl":  "assets/images/panneaux/RS_087.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_087q.png",
+        "categoryId":  "B3",
+        "formeId":  "fin_interdiction",
+        "libelle":  "Fin d’interdiction de l’usage de l’avertisseur sonore"
+    },
+    {
+        "panneauId":  "RS_090",
+        "imageUrl":  "assets/images/panneaux/RS_090.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_090q.png",
+        "categoryId":  "B4",
+        "formeId":  "fin_obligation",
+        "libelle":  "Fin de piste ou bande obligatoire pour cycle"
+    },
+    {
+        "panneauId":  "RS_091",
+        "imageUrl":  "assets/images/panneaux/RS_091.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_091q.png",
+        "categoryId":  "B4",
+        "formeId":  "fin_obligation",
+        "libelle":  "Fin de chemin obligatoire pour piétons"
+    },
+    {
+        "panneauId":  "RS_092",
+        "imageUrl":  "assets/images/panneaux/RS_092.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_092q.png",
+        "categoryId":  "B4",
+        "formeId":  "fin_obligation",
+        "libelle":  "Fin de chemin obligatoire pour cavaliers"
+    },
+    {
+        "panneauId":  "RS_093",
+        "imageUrl":  "assets/images/panneaux/RS_093.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_093q.png",
+        "categoryId":  "B4",
+        "formeId":  "fin_obligation",
+        "libelle":  "Fin de vitesse minimale obligatoire"
+    },
+    {
+        "panneauId":  "RS_094",
+        "imageUrl":  "assets/images/panneaux/RS_094.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_094q.png",
+        "categoryId":  "B4",
+        "formeId":  "fin_obligation",
+        "libelle":  "Fin d’obligation de l’usage des chaînes à neige"
+    },
+    {
+        "panneauId":  "RS_095",
+        "imageUrl":  "assets/images/panneaux/RS_095.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_095q.png",
+        "categoryId":  "B4",
+        "formeId":  "fin_obligation",
+        "libelle":  "Fin de voie réservée aux véhicules de transport en commun"
+    },
+    {
+        "panneauId":  "RS_096",
+        "imageUrl":  "assets/images/panneaux/RS_096.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_096q.png",
+        "categoryId":  "B4",
+        "formeId":  "obligation",
+        "libelle":  "Fin d’obligation dont la nature est mentionnée par une inscription sur le panneau"
+    },
+    {
+        "panneauId":  "RS_114",
+        "imageUrl":  "assets/images/panneaux/RS_114.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_114q.png",
+        "categoryId":  "B5",
+        "formeId":  "indication",
+        "libelle":  "Entrée d’aire piétonne"
+    },
+    {
+        "panneauId":  "RS_115",
+        "imageUrl":  "assets/images/panneaux/RS_115.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_115q.png",
+        "categoryId":  "B5",
+        "formeId":  "fin_indication",
+        "libelle":  "Sortie d’aire piétonne"
+    },
+    {
+        "panneauId":  "RS_200",
+        "imageUrl":  "assets/images/panneaux/RS_200.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_200q.png",
+        "categoryId":  "A",
+        "formeId":  "danger",
+        "libelle":  "Virage à droite"
+    },
+    {
+        "panneauId":  "RS_201",
+        "imageUrl":  "assets/images/panneaux/RS_201.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_201q.png",
+        "categoryId":  "A",
+        "formeId":  "danger",
+        "libelle":  "Virage à gauche"
+    },
+    {
+        "panneauId":  "RS_202",
+        "imageUrl":  "assets/images/panneaux/RS_202.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_202q.png",
+        "categoryId":  "A",
+        "formeId":  "danger",
+        "libelle":  "Succession de virages à droite puis à gauche"
+    },
+    {
+        "panneauId":  "RS_203",
+        "imageUrl":  "assets/images/panneaux/RS_203.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_203q.png",
+        "categoryId":  "A",
+        "formeId":  "danger",
+        "libelle":  "Succession de virages à gauche puis à droite"
+    },
+    {
+        "panneauId":  "RS_204",
+        "imageUrl":  "assets/images/panneaux/RS_204.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_204q.png",
+        "categoryId":  "A",
+        "formeId":  "danger",
+        "libelle":  "Cassis ou dos d’âne"
+    },
+    {
+        "panneauId":  "RS_205",
+        "imageUrl":  "assets/images/panneaux/RS_205.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_205q.png",
+        "categoryId":  "A",
+        "formeId":  "danger",
+        "libelle":  "Ralentisseur de type dos-d’âne"
+    },
+    {
+        "panneauId":  "RS_206",
+        "imageUrl":  "assets/images/panneaux/RS_206.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_206q.png",
+        "categoryId":  "A",
+        "formeId":  "danger",
+        "libelle":  "Chaussée rétrécie"
+    },
+    {
+        "panneauId":  "RS_207",
+        "imageUrl":  "assets/images/panneaux/RS_207.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_207q.png",
+        "categoryId":  "A",
+        "formeId":  "danger",
+        "libelle":  "Chaussée rétrécie par la droite"
+    },
+    {
+        "panneauId":  "RS_208",
+        "imageUrl":  "assets/images/panneaux/RS_208.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_208q.png",
+        "categoryId":  "A",
+        "formeId":  "danger",
+        "libelle":  "Chaussée rétrécie par la gauche"
+    },
+    {
+        "panneauId":  "RS_209",
+        "imageUrl":  "assets/images/panneaux/RS_209.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_209q.png",
+        "categoryId":  "A",
+        "formeId":  "danger",
+        "libelle":  "Chaussée glissante"
+    },
+    {
+        "panneauId":  "RS_210",
+        "imageUrl":  "assets/images/panneaux/RS_210.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_210q.png",
+        "categoryId":  "A",
+        "formeId":  "danger",
+        "libelle":  "Pont mobile"
+    },
+    {
+        "panneauId":  "RS_211",
+        "imageUrl":  "assets/images/panneaux/RS_211.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_211q.png",
+        "categoryId":  "A",
+        "formeId":  "danger",
+        "libelle":  "Passage à niveau muni de barrières"
+    },
+    {
+        "panneauId":  "RS_212",
+        "imageUrl":  "assets/images/panneaux/RS_212.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_212q.png",
+        "categoryId":  "A",
+        "formeId":  "danger",
+        "libelle":  "Passage à niveau sans barrière"
+    },
+    {
+        "panneauId":  "RS_213",
+        "imageUrl":  "assets/images/panneaux/RS_213.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_213q.png",
+        "categoryId":  "A",
+        "formeId":  "danger",
+        "libelle":  "Traversée de voies de tramways"
+    },
+    {
+        "panneauId":  "RS_214",
+        "imageUrl":  "assets/images/panneaux/RS_214.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_214q.png",
+        "categoryId":  "A",
+        "formeId":  "danger",
+        "libelle":  "Endroit fréquenté par les enfants"
+    },
+    {
+        "panneauId":  "RS_215",
+        "imageUrl":  "assets/images/panneaux/RS_215.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_215q.png",
+        "categoryId":  "A",
+        "formeId":  "danger",
+        "libelle":  "Passage pour piétons"
+    },
+    {
+        "panneauId":  "RS_216",
+        "imageUrl":  "assets/images/panneaux/RS_216.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_216q.png",
+        "categoryId":  "A",
+        "formeId":  "danger",
+        "libelle":  "Danger"
+    },
+    {
+        "panneauId":  "RS_217",
+        "imageUrl":  "assets/images/panneaux/RS_217.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_217q.png",
+        "categoryId":  "A",
+        "formeId":  "danger",
+        "libelle":  "Passage d’animaux domestiques"
+    },
+    {
+        "panneauId":  "RS_218",
+        "imageUrl":  "assets/images/panneaux/RS_218.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_218q.png",
+        "categoryId":  "A",
+        "formeId":  "danger",
+        "libelle":  "Passage d’animaux domestiques"
+    },
+    {
+        "panneauId":  "RS_219",
+        "imageUrl":  "assets/images/panneaux/RS_219.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_219q.png",
+        "categoryId":  "A",
+        "formeId":  "danger",
+        "libelle":  "Passage d’animaux sauvages"
+    },
+    {
+        "panneauId":  "RS_220",
+        "imageUrl":  "assets/images/panneaux/RS_220.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_220q.png",
+        "categoryId":  "A",
+        "formeId":  "danger",
+        "libelle":  "Passage de cavaliers"
+    },
+    {
+        "panneauId":  "RS_221",
+        "imageUrl":  "assets/images/panneaux/RS_221.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_221q.png",
+        "categoryId":  "A",
+        "formeId":  "danger",
+        "libelle":  "Descente dangereuse"
+    },
+    {
+        "panneauId":  "RS_222",
+        "imageUrl":  "assets/images/panneaux/RS_222.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_222q.png",
+        "categoryId":  "A",
+        "formeId":  "danger",
+        "libelle":  "Feux tricolores"
+    },
+    {
+        "panneauId":  "RS_223",
+        "imageUrl":  "assets/images/panneaux/RS_223.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_223q.png",
+        "categoryId":  "A",
+        "formeId":  "danger",
+        "libelle":  "Circulation dans les deux sens"
+    },
+    {
+        "panneauId":  "RS_224",
+        "imageUrl":  "assets/images/panneaux/RS_224.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_224q.png",
+        "categoryId":  "A",
+        "formeId":  "danger",
+        "libelle":  "Risque de chutes de pierres"
+    },
+    {
+        "panneauId":  "RS_225",
+        "imageUrl":  "assets/images/panneaux/RS_225.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_225q.png",
+        "categoryId":  "A",
+        "formeId":  "danger",
+        "libelle":  "Débouché sur un quai ou une berge"
+    },
+    {
+        "panneauId":  "RS_226",
+        "imageUrl":  "assets/images/panneaux/RS_226.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_226q.png",
+        "categoryId":  "A",
+        "formeId":  "danger",
+        "libelle":  "Débouché de cyclistes"
+    },
+    {
+        "panneauId":  "RS_227",
+        "imageUrl":  "assets/images/panneaux/RS_227.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_227q.png",
+        "categoryId":  "A",
+        "formeId":  "danger",
+        "libelle":  "Traversée d\u0027une aire de danger aérien"
+    },
+    {
+        "panneauId":  "RS_228",
+        "imageUrl":  "assets/images/panneaux/RS_228.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_228q.png",
+        "categoryId":  "A",
+        "formeId":  "danger",
+        "libelle":  "Vent latéral"
+    },
+    {
+        "panneauId":  "RS_250",
+        "imageUrl":  "assets/images/panneaux/RS_250.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_250q.png",
+        "categoryId":  "AB",
+        "formeId":  "danger",
+        "libelle":  "Priorité à droite"
+    },
+    {
+        "panneauId":  "RS_251",
+        "imageUrl":  "assets/images/panneaux/RS_251.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_251q.png",
+        "categoryId":  "AB",
+        "formeId":  "danger",
+        "libelle":  "Priorité ponctuelle"
+    },
+    {
+        "panneauId":  "RS_254",
+        "imageUrl":  "assets/images/panneaux/RS_254.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_254q.png",
+        "categoryId":  "AB",
+        "formeId":  "special_stop",
+        "libelle":  "Stop"
+    },
+    {
+        "panneauId":  "RS_256",
+        "imageUrl":  "assets/images/panneaux/RS_256.png",
+        "contentImageUrl":  "assets/images/panneaux/RS_256q.png",
+        "categoryId":  "AB",
+        "formeId":  "danger",
+        "libelle":  "Carrefour à sens giratoire"
+    }
+]
