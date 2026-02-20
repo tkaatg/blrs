@@ -33,6 +33,17 @@ Ce document contient le découpage en Epics, Features et User Stories pour impor
 - [DONE] **US 2.3.3 :** En tant qu'enfant, je veux voir un minuteur de 15 secondes pour ajouter du challenge.
 - [DONE] **BUG-001 :** Correction d'une erreur de compilation et renforcement de la sécurité des options.
 - [DONE] **US 2.3.4 :** En tant qu'enfant, je veux utiliser un indice (supprimer des réponses) en échange d'étoiles ou d'une publicité.
+- [DONE] **BUG-002 (recette 20/02) :** Correction du débordement de la barre de navigation sur les petits écrans (remplacement du `SizedBox(width:75)` fixe par `Expanded` dans `_buildNavItem`).
+- [DONE] **UI-001 (recette 20/02) :** Refonte complète de l'UX du quiz :
+  - Décompte 3-2-1 centré dans le ciel, coloré par chiffre (orange/ambre/rouge), effet pulse+scale animé.
+  - Zone panneau octogonale (`OctagonSignPainter`) avec contour pointillé gris collé.
+  - Casino démarre dès l'apparition du panneau (400ms), 12 fps, séquence d'arrêt 1s/1.5s/2s.
+  - Route animée via `fond-anime.gif` (GIF nativement animé).
+  - Intitulé question toujours visible : "Quiz X - Question Y/Z : Trouver le bon panneau !" (fs 16 bold).
+  - Zone feedback à hauteur fixe (46px) pour éviter les décalages de layout.
+  - Messages Gagné/Perdu/Temps terminé en 22px bold avec espace réservé.
+  - Bouton Indice désactivé (grisé) pendant l'animation d'intro.
+  - Contrainte largeur 600px sur grands écrans.
 
 ---
 

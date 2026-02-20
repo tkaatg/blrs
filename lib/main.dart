@@ -116,27 +116,30 @@ class _AuthWrapperState extends State<AuthWrapper> {
     if (_error != null) {
       // Fallback for visual testing if Firestore is persistent offline
       if (_error!.contains('offline') || _error!.contains('unavailable')) {
-        return Scaffold(
-          body: Stack(
-            children: [
-              MainNavigationScreen(
-                player: Player(
-                  uid: 'debug',
-                  pseudo: 'PLAYER',
-                  stars: 1500,
-                  points: 0,
-                  createdAt: DateTime.now(),
-                  unlockedLevels: [1],
-                  statsLevels: {},
-                ),
+        return Stack(
+          children: [
+            MainNavigationScreen(
+              player: Player(
+                uid: 'debug',
+                pseudo: 'PLAYER',
+                stars: 1500,
+                points: 0,
+                createdAt: DateTime.now(),
+                unlockedLevels: [1],
+                statsLevels: {},
               ),
-              Positioned(
-                bottom: 20,
-                left: 20,
-                right: 20,
+            ),
+            Positioned(
+              bottom: 80, // Moved up to avoid nav bar
+              left: 20,
+              right: 20,
+              child: IgnorePointer(
                 child: Container(
                   padding: const EdgeInsets.all(8),
-                  color: Colors.black54,
+                  decoration: BoxDecoration(
+                    color: Colors.black54,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   child: const Text(
                     'MODE DÉMO (Firestore Offline)',
                     style: TextStyle(color: Colors.white, fontSize: 10),
@@ -144,8 +147,8 @@ class _AuthWrapperState extends State<AuthWrapper> {
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         );
       }
       

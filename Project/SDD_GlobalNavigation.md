@@ -1,7 +1,7 @@
 # SDD - Navigation Globale & Architecture UI
 
 - **User Story :** "En tant qu'enfant, je veux une navigation simple et cohérente pour passer d'un écran à l'autre sans me perdre."
-- **Statut :** Implémenté / En cours d'affinage
+- **Statut :** Implémenté ✅ (recette 20/02/2026)
 - **Référence Design :** Ergo Design System (Section 6 & 7)
 
 ---
@@ -30,9 +30,11 @@ La barre de navigation basse est conçue selon les principes de **Hit Zones XXL*
 | **Réglages** | `settings` | Préférences techniques et profil. | En cours (US 5.2) |
 
 ### 2.1 Ergonomie des Onglets
-- **Standardisation :** Toutes les zones tactiles font **75px** de large ([Ergo Design Section 1.2]).
-- **Simplification :** Utilisation d'un rayon de courbure de **12px** pour les encadrés de sélection (plus moderne).
+- **Distribution équitable :** Chaque élément de nav utilise `Expanded` (et non un `SizedBox` fixe) pour répartir la place disponible équitablement → fix BUG-002 (overflow sur petits écrans).
+- **Simplification :** Utilisation d'un rayon de courbure de **12px** pour les encadrés de sélection.
 - **Feedback visuel :** Changement de couleur de l'icône et apparition du libellé pour l'onglet sélectionné.
+
+> **BUG-002 (20/02/2026) :** Remplacement du `SizedBox(width: 75)` fixe par `Expanded` dans `_buildNavItem` → élimine le `RenderFlex overflowed` sur les écrans < 375px.
 
 ---
 

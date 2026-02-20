@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class BubblyButton extends StatelessWidget {
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final Widget child;
   final Color color;
   final double? width;
@@ -9,7 +9,7 @@ class BubblyButton extends StatelessWidget {
 
   const BubblyButton({
     super.key,
-    required this.onTap,
+    this.onTap,
     required this.child,
     this.color = Colors.blue,
     this.width,

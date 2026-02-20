@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html style="height: 100%;">
 <head>
   <!--
     If you are serving your web app in a path other than the root, change the
@@ -18,7 +18,10 @@
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+  <meta name="description" content="Baby Learning Road Signs - Apprends les panneaux !">
+
+  <!-- Viewport: fixes height on mobile and desktop browsers -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
@@ -31,8 +34,27 @@
 
   <title>baby_learning_road_signs</title>
   <link rel="manifest" href="manifest.json">
+
+  <style>
+    /* CRITICAL: Force Flutter canvas to fill exactly the viewport.
+       Without this, Flutter Web page height is "auto" (natural document height)
+       and the Scaffold's bottomNavigationBar appears in the middle of a scrollable page. */
+    html, body {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    /* Flutter renders into flt-glass-pane - force it to fill parent */
+    flt-glass-pane {
+      height: 100% !important;
+      width: 100% !important;
+    }
+  </style>
 </head>
-<body>
+<body style="height: 100%; margin: 0; padding: 0; overflow: hidden;">
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>

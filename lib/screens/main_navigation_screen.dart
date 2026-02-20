@@ -298,11 +298,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     bool isJouer = index == 2;
     
     // Standardize the container for all items
-    return GestureDetector(
-      onTap: () => _onItemTapped(index),
-      behavior: HitTestBehavior.opaque,
-      child: SizedBox(
-        width: 75, // Same width for all
+    return Expanded(
+      child: GestureDetector(
+        onTap: () => _onItemTapped(index),
+        behavior: HitTestBehavior.opaque,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
