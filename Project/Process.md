@@ -38,6 +38,7 @@ Ce document décrit le cycle de travail collaboratif entre l'utilisateur et l'ag
 ### Étape 4 — Documentation
 - Mettre à jour le SDD si la conception a évolué
 - Mettre à jour le Backlog (`Project/Backlog.md`) en changeant le statut
+- **Mettre à jour l'historique** (`Project/ressources/changes_history.md`) avant de proposer le commit à l'utilisateur
 
 ---
 

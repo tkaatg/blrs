@@ -2,7 +2,38 @@
 
 ---
 
-## 20/02/2026 — Recette UI Quiz & Fix Navigation (commit en cours)
+## 22/02/2026 — Recette Shop, Settings & Quiz Polish (commit b72dd70)
+
+### BUG-003 : Crash RenderFlex (Expanded imbriqués)
+- **Fichier :** `lib/screens/quiz_screen.dart`
+- **Correction :** Suppression des `Expanded` en conflit avec `MainAxisSize.min`. Calcul dynamique des tailles via `LayoutBuilder`.
+
+### UI-002 à UI-006 : Polish Quiz & Bilan
+- **Bilan :** Affichage décomposé (Brut / Déduction indice / Net crédité).
+- **GIF Route :** Rechargement forcé via `ValueKey(_gifSeed)` à chaque question.
+- **Feedback :** Timer bloqué à `00:00` sur timeout et bordure orange clignotante sur la bonne réponse.
+- **Ergo :** Gaps entre les cartes d'options augmentés à **20px**.
+- **Dialog :** Simplification radicale du popin de lancement de niveau.
+
+### US 5.1/5.2 : Settings, Leaderboard & Shop
+- **Settings :** Validation pseudo assouplie (4-6 lettres + 4-6 chiffres), max 12 car.
+- **Leaderboard :** Espacement augmenté entre les lignes (10px margin/16px padding). Suppression du halo blanc autour des avatars.
+- **Shop :** Redesign complet du bloc "Sans Pub" (dégradé vert forêt, icône interdite "PUB" barrée, prix sur une ligne).
+
+### ⚙️ Gouvernance & Sécurité
+- **AGENTS.md :** Ajout des règles Windows/PowerShell, workflow SDD/Linear obligatoire, et interdiction d'exécution Git auto.
+- **Sécurité :** Suppression des scripts Python contenant des secrets et mise à jour du `.gitignore`.
+
+---
+
+## 21/02/2026 — Préparation Recette (Commits 4b74337, 8b61ac6)
+
+- Travaux préparatoires sur le bilan des étoiles et les validations de réglages.
+- Restructuration du backlog (Epic 6).
+
+---
+
+## 20/02/2026 — Recette UI Quiz & Fix Navigation (commit d1da54a)
 
 ### BUG-002 : Overflow barre de navigation sur petits écrans
 - **Fichier :** `lib/screens/main_navigation_screen.dart`
@@ -82,4 +113,4 @@
 
 | ID | Description | Priorité |
 |---|---|---|
-| BUG-003 | GIF fond-anime.gif ne redémarre pas sur Chrome Web entre questions (ValueKey non concluant) | Basse |
+| - | (Aucun bug critique identifié sur cette session) | - |
