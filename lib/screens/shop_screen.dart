@@ -108,59 +108,70 @@ class _ShopScreenState extends State<ShopScreen> {
 
   Widget _buildPromoCard() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xFF1565C0), Color(0xFF0D47A1)],
+          colors: [Color(0xFF1A6B3A), Color(0xFF00382B)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.white.withOpacity(0.3), width: 2),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 12, offset: const Offset(0, 4))],
+        border: Border.all(color: Colors.amber.withOpacity(0.5), width: 2),
+        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.35), blurRadius: 12, offset: const Offset(0, 4))],
       ),
       child: Row(
         children: [
-          // Icône PUB barrée
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(14),
+          // Icône "PUB barrée" — style panneau interdit
+          Container(
+            width: 62,
+            height: 62,
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.12),
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.redAccent, width: 3),
+            ),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                // Texte PUB
+                const Text(
+                  'PUB',
+                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 1),
                 ),
-                child: const Center(
-                  child: Text('PUB', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 18, letterSpacing: 1)),
+                // Barre rouge diagonale (rotation 45°, thin container)
+                Transform.rotate(
+                  angle: -0.7,
+                  child: Container(
+                    width: 54,
+                    height: 3.5,
+                    decoration: BoxDecoration(
+                      color: Colors.redAccent,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
                 ),
-              ),
-              // Barre diagonale rouge
-              CustomPaint(
-                size: const Size(60, 60),
-                painter: _StrikethroughPainter(),
-              ),
-            ],
+              ],
+            ),
           ),
-          const SizedBox(width: 18),
-          // Titre seul
+          const SizedBox(width: 16),
+          // Titre
           const Expanded(
             child: Text(
-              'Joue 1 mois sans pub !',
+              'Joue 1 mois\nsans pub !',
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w900,
-                fontSize: 17,
+                fontSize: 16,
+                height: 1.25,
               ),
             ),
           ),
-          // Prix à droite
+          // Prix sur une seule ligne
           BubblyButton(
             onTap: () => _simulateAd('OFFRE SANS PUB ACTIVÉE !', 0),
             color: Colors.amber,
-            width: 80,
-            child: const Text('2,99€', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 15)),
+            width: 90,
+            child: const Text('2,99 €', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 15)),
           ),
         ],
       ),
@@ -232,24 +243,4 @@ class _ShopScreenState extends State<ShopScreen> {
       ),
     );
   }
-}
-
-/// Draws a red diagonal strikethrough line (like a "no" symbol without the circle)
-class _StrikethroughPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.red
-      ..strokeWidth = 5
-      ..strokeCap = StrokeCap.round;
-    // Top-right to bottom-left diagonal (classic "barré" style)
-    canvas.drawLine(
-      Offset(size.width * 0.75, size.height * 0.1),
-      Offset(size.width * 0.1, size.height * 0.85),
-      paint,
-    );
-  }
-
-  @override
-  bool shouldRepaint(_StrikethroughPainter oldDelegate) => false;
 }
