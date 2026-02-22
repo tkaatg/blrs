@@ -90,15 +90,70 @@ Typographie : Bubbly/Glossy. Titres via `BubblyTitle` widget.
 
 ---
 
-## 🚀 Commandes Utiles
+## 🖥️ Environnement de Développement
 
-```bash
+- **OS :** Windows 10/11
+- **Shell :** PowerShell — utiliser `;` pour enchaîner les commandes (PAS `&&`)
+- **Ne JAMAIS utiliser** des commandes bash (`&&`, `||`, etc.) dans les propositions de commande terminale
+
+---
+
+## 🔗 Workflow User Stories / Backlog / Linear / SDD
+
+### Règle ABSOLUE : toute US doit être reliée à Linear ET documentée dans un SDD
+
+Pour chaque US ajoutée, modifiée, avancée ou supprimée :
+
+1. **Mettre à jour `Backlog.md`** — statut `[DONE]`, `[IN PROGRESS]`, ou description mise à jour
+2. **Créer ou mettre à jour le SDD** correspondant : `Project/SDD_US_X_X_X_Name.md`
+   - Format du nom : `SDD_US_2_3_4_HintSystem.md` (numéro US + nom court)
+   - Contenu : objectif, comportement attendu, détails techniques, critères d'acceptance, captures si utile
+3. **Mettre à jour le ticket Linear** correspondant via MCP Linear :
+   - Statut, description, liens vers le SDD et le commit git
+
+### Statuts Linear
+| Backlog | Linear |
+|---|---|
+| `[TODO]` | To Do |
+| `[IN PROGRESS]` | In Progress |
+| `[DONE]` | Done |
+
+---
+
+## 🚫 Règle Git : Commandes Manuelles Uniquement
+
+**L'agent NE DOIT PAS exécuter de commandes `git` dans le terminal.**
+
+Procédure :
+1. L'agent **propose** la (les) commande(s) git à exécuter dans un bloc de code
+2. L'**utilisateur les exécute** dans son terminal PowerShell
+3. L'utilisateur **communique le résultat** à l'agent
+4. L'agent **procède** en fonction du statut retourné
+
+**Exemple :**
+```powershell
+git add -A
+git commit -m "feat(quiz): description du commit"
+git push
+```
+
+---
+
+## 🚀 Commandes Utiles (PowerShell)
+
+```powershell
 # Lancer en mode développement
 flutter run -d chrome
+
+# Lancer avec port fixe (accès LAN/mobile)
+flutter run -d chrome --web-hostname 0.0.0.0 --web-port 8080
 
 # Vérifier les erreurs de compilation
 flutter analyze
 
 # Tests unitaires
 flutter test
+
+# Hot reload / Hot restart (dans le terminal flutter run actif)
+# Taper directement : r (reload) ou R (restart)
 ```
