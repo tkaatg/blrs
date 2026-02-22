@@ -57,49 +57,111 @@ class BoardGameScreenState extends State<BoardGameScreen> {
   void _showStartLevelDialog(int levelId, bool isFree, double boardHeight) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF004D40),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-        title: Text('Lancer le niveau $levelId ?',
-          textAlign: TextAlign.center,
-          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.play_circle_fill, color: Colors.amber, size: 80),
-            const SizedBox(height: 16),
-            Text(
-              isFree
-                  ? 'Tu as déjà réussi ce niveau avec 10/10 ! Tu peux le refaire gratuitement pour t\'entraîner.'
-                  : 'Coût : 500 étoiles',
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.white70, fontSize: 16),
+      barrierColor: Colors.black.withOpacity(0.7),
+      barrierDismissible: true, // Tap outside to cancel
+      builder: (context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          insetPadding: const EdgeInsets.symmetric(horizontal: 32),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [Color(0xFF003828), Color(0xFF005C40), Color(0xFF004D40)],
+              ),
+              borderRadius: BorderRadius.circular(28),
+              border: Border.all(color: Colors.amber.withOpacity(0.5), width: 2),
+              boxShadow: [
+                BoxShadow(color: Colors.black.withOpacity(0.6), blurRadius: 30, spreadRadius: 4),
+                BoxShadow(color: Colors.amber.withOpacity(0.15), blurRadius: 20),
+              ],
             ),
-          ],
-        ),
-        actionsAlignment: MainAxisAlignment.spaceEvenly,
-        actions: [
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.amber,
-              minimumSize: const Size(200, 50),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            padding: const EdgeInsets.fromLTRB(24, 28, 24, 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Title – BubblyTitle style (amber/yellow, bold, shadow)
+                Text(
+                  'NIVEAU $levelId',
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.w900,
+                    color: Colors.amber.shade300,
+                    letterSpacing: 2,
+                    shadows: const [
+                      Shadow(blurRadius: 2, color: Colors.black87, offset: Offset(2, 2)),
+                      Shadow(blurRadius: 12, color: Colors.black54),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                // Cost row
+                if (!isFree)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('Coût : ', style: TextStyle(color: Colors.white70, fontSize: 16)),
+                      const Text('500', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w800)),
+                      const SizedBox(width: 4),
+                      const Icon(Icons.star, color: Colors.amber, size: 22),
+                    ],
+                  )
+                else
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Colors.green.shade800,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: const Text('✅ Gratuit – Mode entraînement',
+                      style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w700)),
+                  ),
+                const SizedBox(height: 24),
+                // Single launch button (full width)
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                    if (!isFree) {
+                      setState(() => widget.player.stars -= 500);
+                    }
+                    if (widget.onLevelSelected != null) widget.onLevelSelected!(levelId);
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    height: 54,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Colors.green.shade400, Colors.green.shade700],
+                      ),
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(color: Colors.green.withOpacity(0.5), blurRadius: 12, offset: const Offset(0, 4)),
+                      ],
+                    ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.play_arrow_rounded, color: Colors.white, size: 28),
+                        SizedBox(width: 6),
+                        Text(
+                          "C'EST PARTI !",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 1,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-            onPressed: () {
-              Navigator.pop(context);
-              if (!isFree) {
-                setState(() {
-                  widget.player.stars -= 500;
-                });
-              }
-              if (widget.onLevelSelected != null) {
-                widget.onLevelSelected!(levelId);
-              }
-            },
-            child: const Text('C\'EST PARTI !', style: TextStyle(color: Color(0xFF004D40), fontWeight: FontWeight.bold)),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 

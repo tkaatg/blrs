@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'dart:async';
 import '../models/quiz_model.dart';
 import '../models/player_model.dart';
@@ -10,7 +10,9 @@ class QuizScreen extends StatefulWidget {
   final Player player;
   final int levelId;
   final bool isFree;
-  final Function(int, int)? onComplete;
+  final Function(int, int)? onComplete;   // (correctCount, totalStars)
+  final Function(int)? onStarsEarned;     // called immediately when results screen appears
+  final VoidCallback? onReplay;           // called when player taps "Rejouer"
 
   const QuizScreen({
     super.key,
@@ -18,6 +20,8 @@ class QuizScreen extends StatefulWidget {
     required this.levelId,
     this.isFree = false,
     this.onComplete,
+    this.onStarsEarned,
+    this.onReplay,
   });
 
   @override
@@ -32,6 +36,7 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
   IntroStep _introStep = IntroStep.countdown;
   int _currentQuestionIndex = 0;
   List<QuizQuestionResult> _results = [];
+  bool _isFirstQuestion = true; // countdown shown only on the first question
   
   // Animation controllers
   late AnimationController _timerController;
@@ -41,6 +46,7 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
   
   int _secondsRemaining = 15;
   int _introCountdown = 3; 
+  int _gifSeed = 0; // incremented each question to bust browser GIF cache
   Timer? _countdownTimer;
   Timer? _introTimer;
 
@@ -92,8 +98,11 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
     if (!mounted) return;
     setState(() {
       _currentState = QuizState.intro;
+      // Always start with countdown step – this hides sign content.
+      // The countdown NUMBERS are only rendered when _isFirstQuestion is true.
       _introStep = IntroStep.countdown;
       _introCountdown = 3; 
+      _gifSeed++;          // new seed → Image.network cache-busts the GIF
       _selectedShapeId = null;
       _isCorrectSelection = false;
       _isTimeout = false;
@@ -103,15 +112,24 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
 
     _setupQuestionOptions();
 
-    // 1. Countdown: 3, 2, 1 
-    _introTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (_introCountdown > 1) {
-        if (mounted) setState(() => _introCountdown--);
-      } else {
-        timer.cancel();
+    if (_isFirstQuestion) {
+      // First question: show 3-2-1 countdown then reveal sign
+      _introTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+        if (_introCountdown > 1) {
+          if (mounted) setState(() => _introCountdown--);
+        } else {
+          timer.cancel();
+          _isFirstQuestion = false;
+          _revealSign();
+        }
+      });
+    } else {
+      // Subsequent questions: GIF plays for 3s (panel hidden), then reveal sign + casino
+      Future.delayed(const Duration(seconds: 3), () {
+        if (!mounted) return;
         _revealSign();
-      }
-    });
+      });
+    }
   }
 
   void _setupQuestionOptions() {
@@ -152,12 +170,8 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
   void _revealSign() {
     if (!mounted) return;
     setState(() => _introStep = IntroStep.showSign);
-    
-    // Start casino immediately when sign content appears
-    Future.delayed(const Duration(milliseconds: 400), () {
-      if (!mounted) return;
-      _startCasinoSequenced();
-    });
+    // Start casino immediately (no extra delay)
+    _startCasinoSequenced();
   }
 
   void _startCasinoSequenced() {
@@ -264,11 +278,13 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
       _currentState = QuizState.feedback;
     });
 
+    // BUG FIX: record hintUsed so the -20★ deduction is applied even on timeout
     _results.add(QuizQuestionResult(
       questionIndex: _currentQuestionIndex,
       isCorrect: false,
       starsEarned: 0,
       timeRemaining: 0,
+      hintUsed: _hintUsed,
     ));
   }
 
@@ -282,6 +298,11 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
       }
     } else {
       if (mounted) {
+        // Compute net stars immediately and credit them before showing results
+        final int hintsUsed = _results.where((r) => r.hintUsed).length;
+        final int gross = _results.fold(0, (sum, r) => sum + r.starsEarned);
+        final int net = (gross - hintsUsed * 20).clamp(0, 999999);
+        widget.onStarsEarned?.call(net);
         setState(() {
           _currentState = QuizState.results;
         });
@@ -312,13 +333,18 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
       builder: (context, constraints) {
         return Stack(
           children: [
-            // Animated road background: GIF handles the animation natively.
-            // ValueKey forces widget recreation on each question so the GIF restarts.
+            // Animated road background: GIF reloaded each question via Image.network
+            // with a seed query param to bust the browser cache.
             Positioned.fill(
-              child: Image.asset(
-                'assets/images/fond-anime.gif',
-                key: ValueKey(_currentQuestionIndex),
+              child: Image.network(
+                key: ValueKey(_gifSeed), // KEY change forces widget rebuild → GIF restarts
+                'assets/images/fond-anime.gif?t=$_gifSeed',
                 fit: BoxFit.cover,
+                errorBuilder: (ctx, e, st) => Image.asset(
+                  key: ValueKey('asset_$_gifSeed'),
+                  'assets/images/fond-anime.gif',
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
 
@@ -345,8 +371,8 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
               ),
             ),
 
-            // COUNTDOWN OVERLAY – in the sky zone (upper quarter of screen)
-            if (_introStep == IntroStep.countdown)
+            // COUNTDOWN OVERLAY – only shown on first question (numbers 3-2-1)
+            if (_introStep == IntroStep.countdown && _isFirstQuestion)
               Align(
                 alignment: Alignment.topCenter,
                 child: Padding(
@@ -376,6 +402,63 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
                               ],
                             ),
                           ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+
+            // FEEDBACK OVERLAY – same sky position as countdown, shown when feedback state
+            if (_currentState == QuizState.feedback)
+              Align(
+                alignment: Alignment.topCenter,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 80),
+                  child: AnimatedBuilder(
+                    animation: _pulseController,
+                    builder: (context, child) {
+                      String msg;
+                      Color color;
+                        if (_isTimeout) {
+                        msg = '⏱';
+                        color = Colors.orange;
+                      } else if (_isCorrectSelection) {
+                        msg = '🏆';
+                        color = Colors.amber;
+                      } else {
+                        msg = '😅';
+                        color = Colors.redAccent;
+                      }
+                      final String label = _isTimeout
+                          ? 'Temps terminé !'
+                          : _isCorrectSelection
+                              ? 'Gagné !'
+                              : 'Perdu...';
+                      final scale = 1.0 + (_pulseController.value * 0.15);
+                      return Transform.scale(
+                        scale: scale,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              msg,
+                              style: const TextStyle(fontSize: 70),
+                            ),
+                            Text(
+                              label,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 36,
+                                fontWeight: FontWeight.w900,
+                                color: color,
+                                shadows: [
+                                  Shadow(blurRadius: 0, color: color.withOpacity(0.5), offset: const Offset(3, 3)),
+                                  const Shadow(blurRadius: 30, color: Colors.black87),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       );
                     },
@@ -459,17 +542,32 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
 
   Widget _buildQuestionLabel() {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16, top: 4),
-      child: Text(
-        'Quiz ${widget.levelId} - Question ${_currentQuestionIndex + 1}/${_questions.length} : Trouver le bon panneau !',
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w900,
-          color: Colors.white,
-          letterSpacing: 0.2,
-          shadows: [Shadow(blurRadius: 4, color: Colors.black54)],
-        ),
+      padding: const EdgeInsets.only(bottom: 12, top: 4),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            'Quiz ${widget.levelId}  –  Question ${_currentQuestionIndex + 1} / ${_questions.length}',
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+              color: Colors.white70,
+              letterSpacing: 0.2,
+            ),
+          ),
+          const SizedBox(height: 2),
+          const Text(
+            'Trouve la forme du panneau !',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w900,
+              color: Colors.white,
+              shadows: [Shadow(blurRadius: 4, color: Colors.black54)],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -481,11 +579,12 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        // Each option card fills 1/3 of available width with small gaps
-        final double cardSize = (constraints.maxWidth - 50) / 3;
+        // 3 cards + 2 gaps of 20px each
+        const double gap = 20.0;
+        final double cardSize = (constraints.maxWidth - 24 - gap * 2) / 3;
 
         return Container(
-          padding: const EdgeInsets.only(top: 16, left: 12, right: 12, bottom: 16),
+          padding: const EdgeInsets.only(top: 12, left: 12, right: 12, bottom: 12),
           decoration: BoxDecoration(
             color: const Color(0xFF00382B).withOpacity(0.93),
             borderRadius: const BorderRadius.vertical(top: Radius.circular(36)),
@@ -497,51 +596,56 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
               // Question label: always visible, text updates after each question
               _buildQuestionLabel(),
 
-              // 3 option cards
+              // 3 option cards with visible dark gap between them
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: List.generate(3, (index) {
-                  final shapeId = isIntroRunning
-                      ? (_casinoDisplayOptions.length > index ? _casinoDisplayOptions[index] : '')
-                      : (shapesReady && _currentOptions.length > index ? _currentOptions[index] : '');
+                children: () {
+                  final List<Widget> items = [];
+                  for (int index = 0; index < 3; index++) {
+                    final shapeId = isIntroRunning
+                        ? (_casinoDisplayOptions.length > index ? _casinoDisplayOptions[index] : '')
+                        : (shapesReady && _currentOptions.length > index ? _currentOptions[index] : '');
 
-                  final isSelected = _selectedShapeId == shapeId && shapeId.isNotEmpty;
-                  final isCorrect = shapeId.isNotEmpty &&
-                      shapeId.toLowerCase() == question.correctShapeId.toLowerCase();
+                    final isSelected = _selectedShapeId == shapeId && shapeId.isNotEmpty;
+                    final isCorrect = shapeId.isNotEmpty &&
+                        shapeId.toLowerCase() == question.correctShapeId.toLowerCase();
 
-                  Widget? feedbackBorder;
-                  if (_currentState == QuizState.feedback && shapeId.isNotEmpty) {
-                    if (isCorrect || (isSelected && !isCorrect)) {
-                      feedbackBorder = AnimatedBlinkingBorder(
-                        color: isCorrect ? const Color(0xFF7FBA00) : Colors.redAccent,
-                        thickness: 8,
-                      );
+                    Widget? feedbackBorder;
+                    if (_currentState == QuizState.feedback && shapeId.isNotEmpty) {
+                      if (_isTimeout && isCorrect) {
+                        feedbackBorder = AnimatedBlinkingBorder(color: Colors.orange, thickness: 8);
+                      } else if (isSelected && _isCorrectSelection && isCorrect) {
+                        feedbackBorder = AnimatedBlinkingBorder(color: const Color(0xFF7FBA00), thickness: 8);
+                      } else if (isSelected && !_isCorrectSelection) {
+                        feedbackBorder = AnimatedBlinkingBorder(color: Colors.redAccent, thickness: 8);
+                      }
                     }
-                  }
 
-                  return GestureDetector(
-                    // Only tappable when shapes are revealed
-                    onTap: shapesReady ? () => _handleSelection(shapeId) : null,
-                    child: Container(
-                      width: cardSize,
-                      height: cardSize,
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(18),
-                        boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 8)],
+                    if (index > 0) items.add(const SizedBox(width: gap));
+                    items.add(Expanded(
+                      child: GestureDetector(
+                        onTap: shapesReady ? () => _handleSelection(shapeId) : null,
+                        child: Container(
+                          height: cardSize,
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(18),
+                            boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 8)],
+                          ),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              if (shapeId.isNotEmpty)
+                                Image.asset(_getShapeImagePath(shapeId), fit: BoxFit.contain),
+                              if (feedbackBorder != null) Positioned.fill(child: feedbackBorder),
+                            ],
+                          ),
+                        ),
                       ),
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          if (shapeId.isNotEmpty)
-                            Image.asset(_getShapeImagePath(shapeId), fit: BoxFit.contain),
-                          if (feedbackBorder != null) Positioned.fill(child: feedbackBorder),
-                        ],
-                      ),
-                    ),
-                  );
-                }),
+                    ));
+                  }
+                  return items;
+                }(),
               ),
               const SizedBox(height: 14),
               _buildInfoRow(question),
@@ -572,48 +676,56 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        // Fixed-height feedback zone – always reserves space to avoid layout shifts
-        SizedBox(
-          height: 46,
-          child: Center(
-            child: feedbackMsg != null
-                ? Text(
-                    feedbackMsg,
-                    style: TextStyle(
-                      color: feedbackColor,
-                      fontSize: 22,
-                      fontWeight: FontWeight.w900,
-                      shadows: const [Shadow(blurRadius: 6, color: Colors.black87)],
-                    ),
-                  )
-                : const SizedBox.shrink(),
-          ),
-        ),
-        const SizedBox(height: 6),
+        // Fixed-height feedback zone: minimal spacer (messages are in sky overlay)
+        const SizedBox(height: 8),
         // Timer + button row
         SizedBox(
-          height: 58,
+          height: 66,
           child: Row(
             children: [
-              // Timer
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.9),
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Colors.blue.shade900, width: 3),
-                ),
-                child: Text(
-                  '00:${_secondsRemaining.toString().padLeft(2, '0')}',
-                  style: TextStyle(
-                    color: _secondsRemaining < 5 ? Colors.red : Colors.blue.shade900,
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Courier',
-                  ),
-                ),
+              // Animated timer SS:CC using _timerController value
+              AnimatedBuilder(
+                animation: _timerController,
+                builder: (context, child) {
+                  // On timeout: always show 00:00
+                  if (_isTimeout) {
+                    return Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.9),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: Colors.red, width: 3),
+                      ),
+                      child: const Text(
+                        '00:00',
+                        style: TextStyle(color: Colors.red, fontSize: 30, fontWeight: FontWeight.w900, fontFamily: 'Courier'),
+                      ),
+                    );
+                  }
+                  final remaining = (1.0 - _timerController.value) * 15.0;
+                  final s = remaining.floor().clamp(0, 15);
+                  final cs = ((remaining - remaining.floor()) * 100).toInt().clamp(0, 99);
+                  final isLow = s < 5;
+                  return Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.9),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: isLow ? Colors.red : Colors.blue.shade900, width: 3),
+                    ),
+                    child: Text(
+                      '${s.toString().padLeft(2, '0')}:${cs.toString().padLeft(2, '0')}',
+                      style: TextStyle(
+                        color: isLow ? Colors.red : Colors.blue.shade900,
+                        fontSize: 30,
+                        fontWeight: FontWeight.w900,
+                        fontFamily: 'Courier',
+                      ),
+                    ),
+                  );
+                },
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 10),
               Expanded(
                 child: _currentState == QuizState.feedback
                     ? _buildFeedbackButton()
@@ -627,10 +739,10 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
   }
 
   Widget _buildFeedbackButton() {
-     return BubblyButton(
-      color: const Color(0xFF0078D4), // Blue Azure
+    return BubblyButton(
+      color: const Color(0xFF0078D4),
       onTap: _nextQuestion,
-      child: const Text('SUIVANT', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900)),
+      child: const Text('SUIVANT', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w900)),
     );
   }
 
@@ -648,7 +760,7 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
             Icon(Icons.lightbulb, color: shapesReady ? Colors.white : Colors.white38),
             const SizedBox(width: 8),
             Text(
-              _hintUsed ? question.hintLabel : 'INDICE -5 ⭐',
+              _hintUsed ? question.hintLabel : 'INDICE -20 ⭐',
               style: TextStyle(
                 color: shapesReady ? Colors.white : Colors.white38,
                 fontWeight: FontWeight.w900,
@@ -689,18 +801,21 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
   }
 
   Widget _buildResultsScreen() {
-    int totalStars = _results.fold(0, (sum, res) => sum + res.starsEarned);
+    final int hintsUsed = _results.where((r) => r.hintUsed).length;
+    final int gross = _results.fold(0, (sum, res) => sum + res.starsEarned);
+    final int totalStars = (gross - hintsUsed * 20).clamp(0, 999999);
     int correctCount = _results.where((r) => r.isCorrect).length;
+    final bool passed = correctCount >= 7;
 
     return Container(
-      color: const Color(0xFF00382B).withOpacity(0.95), // Semi-transparent to feel integrated
+      color: const Color(0xFF00382B).withOpacity(0.95),
       child: Center(
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
                const SizedBox(height: 120),
-               const BubblyTitle(title: 'BILAN NIVEAU'),
+               BubblyTitle(title: 'NIVEAU ${widget.levelId}'),
                const SizedBox(height: 30),
                
                // Summary Card
@@ -710,7 +825,7 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
                  decoration: BoxDecoration(
                    color: Colors.white,
                    borderRadius: BorderRadius.circular(30),
-                   boxShadow: [BoxShadow(color: Colors.black45, blurRadius: 15)],
+                   boxShadow: [const BoxShadow(color: Colors.black45, blurRadius: 15)],
                  ),
                  child: Column(
                    children: [
@@ -723,58 +838,118 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
                       ),
                       const Text('REPONSES CORRECTES', style: TextStyle(fontSize: 14, color: Colors.grey, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 20),
-                      
-                      // Question Dots/Icons
-                      Wrap(
-                        spacing: 10,
-                        runSpacing: 10,
-                        alignment: WrapAlignment.center,
-                        children: List.generate(_questions.length, (index) {
-                          bool isAnswered = index < _results.length;
-                          bool isCorrect = isAnswered && _results[index].isCorrect;
-                          return Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: isAnswered ? (isCorrect ? const Color(0xFF7FBA00) : Colors.redAccent) : Colors.grey.shade300,
-                              shape: BoxShape.circle,
-                              border: Border.all(color: Colors.white, width: 2),
-                            ),
-                            child: Icon(
-                              isAnswered ? (isCorrect ? Icons.check : Icons.close) : Icons.question_mark,
-                              color: Colors.white,
-                              size: 20,
-                            ),
-                          );
-                        }),
-                      ),
-                      
+                      _buildResultDots(),
                       const Divider(height: 40, thickness: 1.5),
-                      
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(Icons.star, color: Colors.amber, size: 40),
+                          Text('+$gross', style: const TextStyle(fontSize: 40, fontWeight: FontWeight.w900, color: Colors.amber)),
                           const SizedBox(width: 8),
-                          Text('+$totalStars', style: const TextStyle(fontSize: 40, fontWeight: FontWeight.w900, color: Colors.amber)),
+                          const Icon(Icons.star, color: Colors.amber, size: 40),
                         ],
+                      ),
+                      if (hintsUsed > 0) ...[  
+                        const SizedBox(height: 4),
+                        Text(
+                          '-  ${hintsUsed * 20} ⭐ (${hintsUsed} indice${hintsUsed > 1 ? 's' : ''})',
+                          style: const TextStyle(fontSize: 14, color: Colors.redAccent, fontWeight: FontWeight.w700),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          '= +$totalStars ⭐ crédités',
+                          style: const TextStyle(fontSize: 14, color: Color(0xFF00A86B), fontWeight: FontWeight.w800),
+                        ),
+                      ],
+                   ],
+                 ),
+               ),
+               
+               const SizedBox(height: 24),
+
+               // Conditional result message
+               Padding(
+                 padding: const EdgeInsets.symmetric(horizontal: 40),
+                 child: Column(
+                   children: [
+                     Text(
+                       passed ? '🏆 Bravo !' : '😅 Dommage !',
+                       style: TextStyle(
+                         fontSize: 28,
+                         fontWeight: FontWeight.w900,
+                         color: passed ? Colors.amber : Colors.orange,
+                         shadows: const [Shadow(blurRadius: 6, color: Colors.black54)],
+                       ),
+                     ),
+                      const SizedBox(height: 6),
+                      Text(
+                        passed
+                            ? 'Niveau suivant débloqué !'                           
+                            : 'Trouve 7 bonnes réponses\npour accéder au niveau suivant.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: passed ? 20 : 15,
+                          fontWeight: FontWeight.w800,
+                          color: passed ? Colors.white : Colors.white70,
+                          shadows: const [
+                            Shadow(blurRadius: 2, color: Colors.black87, offset: Offset(1, 1)),
+                            Shadow(blurRadius: 8, color: Colors.black54),
+                          ],
+                        ),
                       ),
                    ],
                  ),
                ),
                
-               const SizedBox(height: 40),
+               const SizedBox(height: 24),
                
-               // Back Button (Limited width)
-               SizedBox(
-                 width: 250,
-                 child: BubblyButton(
-                   onTap: () {
-                     if (widget.onComplete != null) widget.onComplete!(correctCount, totalStars);
-                   },
-                   child: const Text('RETOUR CARTE', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900)),
+               // Action buttons
+               if (!passed) ...[  
+                 // Failed: [Rejouer 500⭐]  +  [Retour]
+                 Padding(
+                   padding: const EdgeInsets.symmetric(horizontal: 40),
+                   child: Row(
+                     children: [
+                        Expanded(
+                          child: SizedBox(
+                            height: 56,
+                            child: BubblyButton(
+                              color: Colors.deepOrange,
+                              onTap: () {
+                                if (widget.onReplay != null) widget.onReplay!();
+                              },
+                              child: const Text(
+                                'REJOUER (500 ⭐)',
+                                style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w900),
+                              ),
+                            ),
+                          ),
+                        ),
+                       const SizedBox(width: 12),
+                       Expanded(
+                         child: BubblyButton(
+                           color: const Color(0xFF0078D4),
+                           onTap: () {
+                             if (widget.onComplete != null) widget.onComplete!(correctCount, totalStars);
+                           },
+                           child: const Text('RETOUR', style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w900)),
+                         ),
+                       ),
+                     ],
+                   ),
                  ),
-               ),
+               ] else ...[  
+                 // Passed: single [Retour] button
+                 SizedBox(
+                   width: 250,
+                   child: BubblyButton(
+                     color: const Color(0xFF0078D4),
+                     onTap: () {
+                       if (widget.onComplete != null) widget.onComplete!(correctCount, totalStars);
+                     },
+                     child: const Text('RETOUR', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900)),
+                   ),
+                 ),
+               ],
                const SizedBox(height: 100),
             ],
           ),
@@ -782,7 +957,52 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
       ),
     );
   }
-}
+
+  /// Renders answer dots in rows of 5 maximum.
+  Widget _buildResultDots() {
+    const int perRow = 5;
+    const double dotSize = 40.0;
+    const double spacing = 10.0;
+
+    final List<Widget> dots = List.generate(_questions.length, (index) {
+      final bool isAnswered = index < _results.length;
+      final bool isCorrect = isAnswered && _results[index].isCorrect;
+      return Container(
+        width: dotSize,
+        height: dotSize,
+        decoration: BoxDecoration(
+          color: isAnswered ? (isCorrect ? const Color(0xFF7FBA00) : Colors.redAccent) : Colors.grey.shade300,
+          shape: BoxShape.circle,
+          border: Border.all(color: Colors.white, width: 2),
+        ),
+        child: Icon(
+          isAnswered ? (isCorrect ? Icons.check : Icons.close) : Icons.question_mark,
+          color: Colors.white,
+          size: 20,
+        ),
+      );
+    });
+
+    // Split into chunks of perRow
+    final List<List<Widget>> rows = [];
+    for (int i = 0; i < dots.length; i += perRow) {
+      rows.add(dots.sublist(i, i + perRow > dots.length ? dots.length : i + perRow));
+    }
+
+    return Column(
+      children: rows.map((rowDots) => Padding(
+        padding: const EdgeInsets.only(bottom: spacing),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: rowDots.map((dot) => Padding(
+            padding: const EdgeInsets.symmetric(horizontal: spacing / 2),
+            child: dot,
+          )).toList(),
+        ),
+      )).toList(),
+    );
+  }
+} // end _QuizScreenState
 
 class DottedBorderPainter extends CustomPainter {
   final Color color;

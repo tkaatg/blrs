@@ -21,10 +21,11 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   final GlobalKey<BoardGameScreenState> _boardGameKey = GlobalKey<BoardGameScreenState>();
   int? _activeQuizLevelId;
   bool _quizIsFree = false;
+  bool _quizComplete = false; // true once results screen is shown → no exit dialog
 
   void _onItemTapped(int index) {
-    if (_activeQuizLevelId != null) {
-      // Show confirmation even if clicking the current index (1) during quiz
+    // No exit dialog if quiz is already finished (bilan screen shown)
+    if (_activeQuizLevelId != null && !_quizComplete) {
       _showCancelQuizDialog(index);
       return; 
     }
@@ -33,10 +34,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   void _doSwitchTab(int index) {
     if (index == 2) {
-      // "Jouer" button logic: highlights map/accueil and triggers level
       setState(() {
         _selectedIndex = 1;
-        _activeQuizLevelId = null; 
+        _activeQuizLevelId = null;
+        _quizComplete = false;
       });
       Future.delayed(const Duration(milliseconds: 200), () {
         final boardState = _boardGameKey.currentState;
@@ -49,6 +50,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     setState(() {
       _selectedIndex = index;
       _activeQuizLevelId = null;
+      _quizComplete = false;
     });
   }
 
@@ -86,15 +88,17 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     setState(() {
       _activeQuizLevelId = levelId;
       _quizIsFree = isFree;
+      _quizComplete = false;
     });
   }
 
   void _onQuizComplete(int levelId, int score, int starsGained) {
     setState(() {
       _activeQuizLevelId = null;
-      widget.player.stars += starsGained;
+      _quizComplete = false;
+      // Stars are already credited by onStarsEarned; don't add again.
 
-      // 1. Persist correct answers count if better (For Visual UI)
+      // 1. Persist correct answers count if better
       int oldCorrectCount = widget.player.statsLevels['level_$levelId'] ?? 0;
       if (score > oldCorrectCount) {
         widget.player.statsLevels['level_$levelId'] = score;
@@ -109,21 +113,46 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         }
       }
 
-      // Unlock next level if score >= 5 (passing grade)
-      if (score >= 5) {
+      // Unlock next level if score >= 7
+      if (score >= 7) {
         int nextLevel = levelId + 1;
         if (nextLevel <= 10) {
           if (!widget.player.unlockedLevels.contains(nextLevel)) {
             widget.player.unlockedLevels.add(nextLevel);
           }
-          // Increment maxLevelUnlocked if we just beat the highest unlocked level
           if (levelId == widget.player.maxLevelUnlocked) {
             widget.player.maxLevelUnlocked = nextLevel;
           }
         }
       }
-      _selectedIndex = 1; // Return to map
+      _selectedIndex = 1;
     });
+  }
+
+  /// Called immediately when the results screen appears – credits stars right away.
+  void _onQuizStarsEarned(int stars) {
+    setState(() {
+      _quizComplete = true; // Bilan screen is now visible→ no exit dialog
+      widget.player.stars += stars;
+    });
+  }
+
+  /// Called when player taps [Rejouer] from the bilan screen.
+  void _onQuizReplay(int levelId) {
+    if (widget.player.stars >= 500) {
+      setState(() {
+        widget.player.stars -= 500;
+        _quizComplete = false;
+        // Simply restart quiz for same level (keeps _activeQuizLevelId)
+        _activeQuizLevelId = null;
+      });
+      Future.delayed(const Duration(milliseconds: 50), () {
+        if (mounted) setState(() => _activeQuizLevelId = levelId);
+      });
+    } else {
+      // Not enough stars – go to shop
+      _doSwitchTab(0);
+    }
   }
 
   @override
@@ -164,6 +193,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
               player: widget.player,
               levelId: _activeQuizLevelId!,
               isFree: _quizIsFree,
+              onStarsEarned: (stars) => _onQuizStarsEarned(stars),
+              onReplay: () => _onQuizReplay(_activeQuizLevelId!),
               onComplete: (score, stars) => _onQuizComplete(_activeQuizLevelId!, score, stars),
             ),
 
