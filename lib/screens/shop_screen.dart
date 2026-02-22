@@ -67,8 +67,8 @@ class _ShopScreenState extends State<ShopScreen> {
                 // Star Packages
                 _buildShopItem(context, '1000 Étoiles', '1,99 €', 1000),
                 _buildShopItem(context, '3000 Étoiles', '4,99 €', 3000),
-                _buildShopItem(context, '5000 Étoiles', '6,99 €', 5000, hasBonus: true, bonusDesc: '1 Jour Sans Pub'),
-                _buildShopItem(context, '10000 Étoiles', '11,99 €', 10000, hasBonus: true, bonusDesc: '3 Jours Sans Pub'),
+                _buildShopItem(context, '5000 Étoiles', '6,99 €', 5000),
+                _buildShopItem(context, '10000 Étoiles', '11,99 €', 10000),
                 
                 const SizedBox(height: 40),
               ],
@@ -108,42 +108,59 @@ class _ShopScreenState extends State<ShopScreen> {
 
   Widget _buildPromoCard() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
       decoration: BoxDecoration(
-        color: Colors.lightBlue[100],
+        gradient: const LinearGradient(
+          colors: [Color(0xFF1565C0), Color(0xFF0D47A1)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.white, width: 4),
+        border: Border.all(color: Colors.white.withOpacity(0.3), width: 2),
+        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 12, offset: const Offset(0, 4))],
       ),
       child: Row(
         children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('Supprimer pubs', style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold, fontSize: 18)),
-                const SizedBox(height: 4),
-                const Text('Jouez 7 jours sans pub !', style: TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.w600)),
-                const SizedBox(height: 12),
-                BubblyButton(
-                  onTap: () => _simulateAd('OFFRE SANS PUB ACTIVÉE !', 0),
-                  color: Colors.blue,
-                  child: const Text('1,99 €', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 16),
+          // Icône PUB barrée
           Stack(
             alignment: Alignment.center,
             children: [
-              const Icon(Icons.tv_rounded, size: 80, color: Colors.orangeAccent),
-              const Positioned(
-                top: 0,
-                right: 0,
-                child: Icon(Icons.block, color: Colors.red, size: 30),
+              Container(
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: const Center(
+                  child: Text('PUB', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 18, letterSpacing: 1)),
+                ),
               ),
-              const Text('ADS\nFREE', textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+              // Barre diagonale rouge
+              CustomPaint(
+                size: const Size(60, 60),
+                painter: _StrikethroughPainter(),
+              ),
             ],
+          ),
+          const SizedBox(width: 18),
+          // Titre seul
+          const Expanded(
+            child: Text(
+              'Joue 1 mois sans pub !',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w900,
+                fontSize: 17,
+              ),
+            ),
+          ),
+          // Prix à droite
+          BubblyButton(
+            onTap: () => _simulateAd('OFFRE SANS PUB ACTIVÉE !', 0),
+            color: Colors.amber,
+            width: 80,
+            child: const Text('2,99€', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 15)),
           ),
         ],
       ),
@@ -162,12 +179,12 @@ class _ShopScreenState extends State<ShopScreen> {
         children: [
           const Icon(Icons.play_circle_fill_rounded, color: Colors.deepPurple, size: 40),
           const SizedBox(width: 12),
-          Expanded(
+          const Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text('Étoiles gratuites', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                Text('Regarde une pub pour gagner 500 étoiles !', style: TextStyle(fontSize: 12)),
+              children: [
+                Text('500 Étoiles gratuites', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                Text('Regarde une publicité', style: TextStyle(fontSize: 12)),
               ],
             ),
           ),
@@ -215,4 +232,24 @@ class _ShopScreenState extends State<ShopScreen> {
       ),
     );
   }
+}
+
+/// Draws a red diagonal strikethrough line (like a "no" symbol without the circle)
+class _StrikethroughPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.red
+      ..strokeWidth = 5
+      ..strokeCap = StrokeCap.round;
+    // Top-right to bottom-left diagonal (classic "barré" style)
+    canvas.drawLine(
+      Offset(size.width * 0.75, size.height * 0.1),
+      Offset(size.width * 0.1, size.height * 0.85),
+      paint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(_StrikethroughPainter oldDelegate) => false;
 }

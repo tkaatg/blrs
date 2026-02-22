@@ -64,8 +64,8 @@ class LeaderboardScreen extends StatelessWidget {
     }
 
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 6),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       decoration: BoxDecoration(
         color: isMe ? Colors.white.withOpacity(0.15) : Colors.white.withOpacity(0.05),
         borderRadius: BorderRadius.circular(15),
@@ -85,24 +85,17 @@ class LeaderboardScreen extends StatelessWidget {
             ),
           ),
           
-          // Avatar
-          Container(
+          // Avatar (sans halo)
+          SizedBox(
             width: 40,
             height: 40,
-            decoration: BoxDecoration(
-              color: Colors.white24,
-              shape: BoxShape.circle,
-              border: Border.all(color: Colors.white30),
-            ),
-            child: ClipOval(
-              child: entry.avatarId.isEmpty 
-                  ? const Icon(Icons.person, color: Colors.white)
-                  : Image.asset(
-                      'assets/images/avatars/avatar_${_getAvatarFileName(entry.avatarId)}.png',
-                      fit: BoxFit.contain,
-                      errorBuilder: (c, e, s) => const Icon(Icons.person, color: Colors.white),
-                    ),
-            ),
+            child: entry.avatarId.isEmpty
+                ? const Icon(Icons.person, color: Colors.white)
+                : Image.asset(
+                    'assets/images/avatars/avatar_${_getAvatarFileName(entry.avatarId)}.png',
+                    fit: BoxFit.contain,
+                    errorBuilder: (c, e, s) => const Icon(Icons.person, color: Colors.white),
+                  ),
           ),
           
           const SizedBox(width: 15),

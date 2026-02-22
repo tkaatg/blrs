@@ -48,7 +48,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: const Text('Info Pseudo', style: TextStyle(fontWeight: FontWeight.bold)),
         content: const Text(
-          'Votre pseudo doit faire 9 caractères avec 5 lettres puis 4 chiffres. Aucun caractère spécial n\'est autorisé.',
+          'Ton pseudo doit contenir 4 à 6 lettres suivies de 4 à 6 chiffres. Aucun caractère spécial autorisé.\nEx : LAPIN1234 ou CAT42',
           style: TextStyle(fontSize: 16),
         ),
         actions: [
@@ -96,12 +96,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             labelStyle: TextStyle(fontSize: 12, color: Colors.blueGrey, fontWeight: FontWeight.bold),
                             counterText: "",
                           ),
-                          maxLength: 9,
+                          maxLength: 12,
                           onChanged: (val) => _saveSettings(),
                           validator: (value) {
                             if (value == null || value.isEmpty) return 'Saisis un pseudo';
-                            final reg = RegExp(r'^[a-zA-Z]{5}[0-9]{4}$');
-                            if (!reg.hasMatch(value)) return 'Format incorrect';
+                            final reg = RegExp(r'^[a-zA-Z]{4,6}[0-9]{4,6}$');
+                            if (!reg.hasMatch(value)) return '4-6 lettres puis 4-6 chiffres';
                             return null;
                           },
                         ),

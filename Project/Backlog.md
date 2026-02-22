@@ -79,3 +79,34 @@ Ce document contient le découpage en Epics, Features et User Stories pour impor
 ### Feature 5.2 : Paramètres
 - [DONE] **US 5.2.1 :** En tant qu'utilisateur, je veux changer mon pseudo (géré par format/validation) et choisir mon avatar parmi une sélection de mascottes.
 - [DONE] **US 5.2.2 :** En tant qu'utilisateur, je veux changer la langue du jeu (FR/EN) et activer/désactiver les sons, musiques et vibrations.
+
+---
+
+## EPIC 6 : Monétisation Technique, Tracking & Distribution
+**Définition :** Intégration des SDK tiers de monétisation, publicité, analytics et déploiement sur les stores.
+
+### Feature 6.1 : Monétisation In-App (RevenueCat)
+- **US 6.1.1 :** En tant que développeur, je veux installer et configurer le SDK RevenueCat (Flutter) pour gérer les achats in-app sur iOS et Android.
+- **US 6.1.2 :** En tant que développeur, je veux brancher les produits App Store Connect / Google Play Console (packs d'étoiles, suppression de pub) sur RevenueCat.
+- **US 6.1.3 :** En tant qu'utilisateur, je veux pouvoir acheter un pack d'étoiles ou l'offre sans pub, avec confirmation de paiement et attribution côté serveur.
+
+### Feature 6.2 : Publicité (AdMob)
+- **US 6.2.1 :** En tant que développeur, je veux installer et configurer le SDK Google AdMob (Flutter) avec les unités publicitaires (App ID, Ad Unit ID) pour iOS et Android.
+- **US 6.2.2 :** En tant qu'utilisateur, je veux voir une publicité rewarded vidéo quand je clique sur "Retour" en fin de niveau, avec crédit des étoiles après visionnage complet.
+- **US 6.2.3 :** En tant qu'utilisateur, je veux voir une publicité rewarded vidéo dans la boutique pour obtenir 500 étoiles gratuites.
+- **US 6.2.4 :** En tant que développeur, je veux supprimer l'overlay de simulation publicitaire et le remplacer par les vraies publicités AdMob.
+
+### Feature 6.3 : Tracking & Analytics (BigQuery)
+- **US 6.3.1 :** En tant que développeur, je veux définir un schéma d'events analytiques (ex : `quiz_started`, `question_answered`, `hint_used`, `level_completed`, `purchase_initiated`, `ad_watched`) couvrant les parcours clés.
+- **US 6.3.2 :** En tant que développeur, je veux implémenter une API JSON (Cloud Functions ou Cloud Run) qui reçoit les events depuis le client Flutter et les écrit dans BigQuery.
+- **US 6.3.3 :** En tant que développeur, je veux que tous les events soient agrégés (aucun identifiant personnel, uniquement des données anonymisées de gameplay).
+
+### Feature 6.4 : Politique de Confidentialité
+- **US 6.4.1 :** En tant qu'utilisateur (parent), je veux accéder à une politique de confidentialité claire précisant : quelles données sont collectées (uniquement agrégées, sans ID perso), dans quel but (améliorer le jeu), qu'aucune donnée n'est vendue ni partagée à des tiers à des fins publicitaires, et comment contacter le développeur pour suppression / questions.
+- **US 6.4.2 :** En tant que développeur, je veux intégrer la page de politique de confidentialité dans l'écran Réglages (bouton "Confidentialité" existant) et la soumettre lors de la mise en revue App Store / Play Store.
+
+### Feature 6.5 : Distribution (App Store & Play Store)
+- **US 6.5.1 :** En tant que développeur, je veux créer et configurer l'application sur App Store Connect (identifiant, catégorie, âge PEGI, captures d'écran, description FR/EN).
+- **US 6.5.2 :** En tant que développeur, je veux créer et configurer l'application sur Google Play Console (fiche store, politique de confidentialité, classification de contenu).
+- **US 6.5.3 :** En tant que développeur, je veux générer les builds de production iOS (`.ipa`) et Android (`.aab`) et les soumettre en révision sur les deux stores.
+- **US 6.5.4 :** En tant que développeur, je veux configurer un pipeline CI/CD minimal (ex : GitHub Actions ou Fastlane) pour automatiser les builds et déploiements.
