@@ -69,6 +69,8 @@ flutter:
     - assets/images/panneaux/
     - assets/images/shapes/
     - assets/data/
+    - assets/audio/music/
+    - assets/audio/sfx/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

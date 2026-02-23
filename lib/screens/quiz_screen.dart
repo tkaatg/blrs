@@ -5,13 +5,14 @@ import '../models/player_model.dart';
 import '../services/sign_service.dart';
 import '../widgets/bubbly_title.dart';
 import '../widgets/bubbly_button.dart';
+import '../services/audio_service.dart';
 
 class QuizScreen extends StatefulWidget {
   final Player player;
   final int levelId;
   final bool isFree;
-  final Function(int, int)? onComplete;   // (correctCount, totalStars)
-  final Function(int)? onStarsEarned;     // called immediately when results screen appears
+  final Function(int score, int stars)? onComplete;
+  final Function(int score, int stars)? onResultsAvailable; // called immediately when results screen appears
   final VoidCallback? onReplay;           // called when player taps "Rejouer"
 
   const QuizScreen({
@@ -20,7 +21,7 @@ class QuizScreen extends StatefulWidget {
     required this.levelId,
     this.isFree = false,
     this.onComplete,
-    this.onStarsEarned,
+    this.onResultsAvailable,
     this.onReplay,
   });
 
@@ -74,6 +75,7 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
     // Road scroll: loops every 1.5s so it feels like the car is approaching
     _roadController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1500))..repeat();
 
+    AudioService().playMusic('music/quiz_theme.mp3');
     _startIntroSequence();
   }
 
@@ -86,6 +88,7 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
     _casinoFrameTimer?.cancel();
     _countdownTimer?.cancel();
     _introTimer?.cancel();
+    AudioService().playMusic('music/map_theme.mp3');
     super.dispose();
   }
 
@@ -114,6 +117,7 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
 
     if (_isFirstQuestion) {
       // First question: show 3-2-1 countdown then reveal sign
+      AudioService().playSfx('sfx/countdown.mp3');
       _introTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
         if (_introCountdown > 1) {
           if (mounted) setState(() => _introCountdown--);
@@ -237,7 +241,13 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
     _countdownTimer?.cancel();
     _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_secondsRemaining > 0) {
-        if (mounted) setState(() => _secondsRemaining--);
+        if (mounted) {
+          setState(() => _secondsRemaining--);
+          // Alert the child at 3 seconds remaining
+          if (_secondsRemaining == 3) {
+            AudioService().playSfx('sfx/countdown.mp3');
+          }
+        }
       } else {
         timer.cancel();
         _handleTimeout();
@@ -259,6 +269,13 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
       _currentState = QuizState.feedback;
     });
 
+    if (isCorrect) {
+      AudioService().playSfx('sfx/correct.mp3');
+    } else {
+      AudioService().playSfx('sfx/wrong.mp3');
+      AudioService().vibrate();
+    }
+
     int bonus = (isCorrect && !widget.isFree) ? (_secondsRemaining * 10) : 0;
     _results.add(QuizQuestionResult(
       questionIndex: _currentQuestionIndex,
@@ -277,6 +294,9 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
       _isTimeout = true;
       _currentState = QuizState.feedback;
     });
+
+    AudioService().playSfx('sfx/timeout.mp3');
+    AudioService().vibrate();
 
     // BUG FIX: record hintUsed so the -20★ deduction is applied even on timeout
     _results.add(QuizQuestionResult(
@@ -302,10 +322,12 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
         final int hintsUsed = _results.where((r) => r.hintUsed).length;
         final int gross = _results.fold(0, (sum, r) => sum + r.starsEarned);
         final int net = (gross - hintsUsed * 20).clamp(0, 999999);
-        widget.onStarsEarned?.call(net);
+        int correctCount = _results.where((r) => r.isCorrect).length;
+        widget.onResultsAvailable?.call(correctCount, net);
         setState(() {
           _currentState = QuizState.results;
         });
+        AudioService().playSfx('sfx/victory.mp3');
       }
     }
   }

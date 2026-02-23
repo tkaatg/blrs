@@ -51,6 +51,8 @@ Ce document contient le découpage en Epics, Features et User Stories pour impor
 - [DONE] **UI-004 (recette 21/02) :** Timer affiche `00:00` sur timeout + bordure orange clignotante sur la bonne réponse.
 - [DONE] **UI-005 (recette 21/02) :** Espacement entre les 3 cartes-formes augmenté à 20px — meilleure séparation visuelle et confort tactile.
 - [DONE] **UI-006 (recette 21/02) :** Dialog de lancement de niveau simplifié — suppression badge cercle + bouton Annuler, titre style BubblyTitle, coût avec icône étoile inline, bouton "C'EST PARTI !" pleine largeur.
+- [DONE] **BUG-005 (recette 23/02) :** Fix bug scoring classement — persistance Firestore immédiate lors de l'affichage du bilan pour éviter la perte de points si l'utilisateur change d'onglet sans cliquer sur "RETOUR".
+- [DONE] **UI-007 (recette 23/02) :** Unification du naming — renommage de "Réglages" en "Paramètres" dans toute l'application.
 
 
 ---
@@ -72,8 +74,10 @@ Ce document contient le découpage en Epics, Features et User Stories pour impor
 **Définition :** Univers sonore pour l'engagement.
 
 ### Feature 4.1 : Univers Sonore
-- **US 4.1.1 :** En tant qu'enfant, je veux entendre une musique joyeuse et des bruitages (victoire/erreur) pour rendre l'expérience vivante.
-- **US 4.1.2 :** En tant qu'utilisateur, je veux pouvoir couper la musique ou les sons indépendamment dans les paramètres.
+- [DONE] **US 4.1.1 :** Moteur Audio & SFX. (SDD: [SDD_US_4_1_1_AudioEngine_SFX.md](SDD_US_4_1_1_AudioEngine_SFX.md))
+- [DONE] **US 4.1.2 :** Playlist & Musique. (SDD: [SDD_US_4_1_2_MusicSystem.md](SDD_US_4_1_2_MusicSystem.md))
+- [DONE] **US 4.1.3 :** Feedback Haptique. (SDD: [SDD_US_4_1_3_HapticFeedback.md](SDD_US_4_1_3_HapticFeedback.md))
+- [DONE] **US 4.1.4 :** Réactivité des Réglages. (SDD: [SDD_US_4_1_4_AudioSettingsIntegration.md](SDD_US_4_1_4_AudioSettingsIntegration.md))
 
 ---
 

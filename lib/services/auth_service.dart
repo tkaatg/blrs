@@ -89,4 +89,17 @@ class AuthService {
   Future<void> signOut() async {
     await _auth.signOut();
   }
+
+  /// Persist player data to Firestore
+  Future<void> updatePlayer(Player player) async {
+    if (useMockMode) {
+      print('AuthService: Mock Update for ${player.uid}');
+      return;
+    }
+    try {
+      await _db.collection('players').doc(player.uid).update(player.toFirestore());
+    } catch (e) {
+      print('AuthService: Error updating player: $e');
+    }
+  }
 }

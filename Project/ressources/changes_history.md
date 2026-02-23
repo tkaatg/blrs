@@ -1,5 +1,22 @@
 # Historique des Modifications - BLRS
 
+## 23/02/2026 — EPIC 4 : Audio & Immersion + Polissage Final
+ 
+### 🛠️ BUG-005 : Fix Scoring & Leaderboard
+- **Problème :** Les scores etXP n'étaient validés qu'au clic sur "RETOUR", causant une perte de progression si l'utilisateur changeait d'onglet depuis le bilan.
+- **Correction :** Persistance **immédiate** (Firestore via `AuthService.updatePlayer`) dès l'affichage du bilan.
+- **Validation :** Le classement est mis à jour instantanément à la fin du quiz.
+
+### 🎨 UI-007 : Unification du Naming "Paramètres"
+- **Navigation :** Renommage de l'onglet "Réglages" en **"Paramètres"** pour cohérence avec le titre de l'écran.
+
+### 🔊 EPIC 4 : Audio & Immersion (Finalisation)
+- **Service Centralisé :** Création de `AudioService` (audioplayers 6.5) avec gestion séparée Musique/SFX.
+- **Musique :** Transitions automatiques entre Carte (`map_theme.mp3`) et Quiz (`quiz_theme.mp3`).
+- **SFX Quiz :** Sons pour décompte, bonne réponse, erreur, timeout et bilan (fanfare).
+- **Feedback :** Vibrations haptiques sur les erreurs et le temps écoulé.
+- **Réglages :** Coupure instantanée de la musique/sons dès modification dans les paramètres.
+
 ---
 
 ## 22/02/2026 — Recette Shop, Settings & Quiz Polish (commit b72dd70)

@@ -6,6 +6,9 @@ import 'quiz_screen.dart';
 import 'settings_screen.dart';
 import 'leaderboard_screen.dart';
 import '../widgets/bubbly_title.dart';
+import '../services/audio_service.dart';
+import '../services/auth_service.dart';
+import 'package:provider/provider.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   final Player player;
@@ -23,7 +26,23 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   bool _quizIsFree = false;
   bool _quizComplete = false; // true once results screen is shown → no exit dialog
 
+  @override
+  void initState() {
+    super.initState();
+    AudioService().updateSettings(widget.player);
+    AudioService().playMusic('music/map_theme.mp3');
+  }
+
+  @override
+  void didUpdateWidget(MainNavigationScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.player != widget.player) {
+      AudioService().updateSettings(widget.player);
+    }
+  }
+
   void _onItemTapped(int index) {
+    AudioService().playSfx('sfx/click.mp3');
     // No exit dialog if quiz is already finished (bilan screen shown)
     if (_activeQuizLevelId != null && !_quizComplete) {
       _showCancelQuizDialog(index);
@@ -92,50 +111,56 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     });
   }
 
-  void _onQuizComplete(int levelId, int score, int starsGained) {
+  /// Process and persist results as soon as they are ready.
+  void _onQuizResultsAvailable(int score, int starsGained) {
     setState(() {
-      _activeQuizLevelId = null;
-      _quizComplete = false;
-      // Stars are already credited by onStarsEarned; don't add again.
+      _quizComplete = true; // Bilan screen visible -> no exit confirmation needed
+      
+      // 1. Credit Stars
+      widget.player.stars += starsGained;
 
-      // 1. Persist correct answers count if better
-      int oldCorrectCount = widget.player.statsLevels['level_$levelId'] ?? 0;
+      // 2. Persist level score if better (For color badges)
+      int oldCorrectCount = widget.player.statsLevels['level_$_activeQuizLevelId'] ?? 0;
       if (score > oldCorrectCount) {
-        widget.player.statsLevels['level_$levelId'] = score;
+        widget.player.statsLevels['level_$_activeQuizLevelId'] = score;
       }
 
-      // 2. Persist speed points if better (For Leaderboard)
+      // 3. Persist speed points if better (For Leaderboard)
       if (!_quizIsFree) {
-        int currentBestPoints = widget.player.bestPointsByLevel['level_$levelId'] ?? 0;
+        int currentBestPoints = widget.player.bestPointsByLevel['level_$_activeQuizLevelId'] ?? 0;
         if (starsGained > currentBestPoints) {
-          widget.player.bestPointsByLevel['level_$levelId'] = starsGained;
+          widget.player.bestPointsByLevel['level_$_activeQuizLevelId'] = starsGained;
           widget.player.updatePointsFromBestScores();
         }
       }
 
-      // Unlock next level if score >= 7
-      if (score >= 7) {
-        int nextLevel = levelId + 1;
+      // 4. Unlock next level if score >= 7
+      if (score >= 7 && _activeQuizLevelId != null) {
+        int nextLevel = _activeQuizLevelId! + 1;
         if (nextLevel <= 10) {
           if (!widget.player.unlockedLevels.contains(nextLevel)) {
             widget.player.unlockedLevels.add(nextLevel);
           }
-          if (levelId == widget.player.maxLevelUnlocked) {
+          if (_activeQuizLevelId == widget.player.maxLevelUnlocked) {
             widget.player.maxLevelUnlocked = nextLevel;
           }
         }
       }
-      _selectedIndex = 1;
+      
+      // 5. Persist to Firestore immediately so leaderboard is updated
+      context.read<AuthService>().updatePlayer(widget.player);
     });
   }
 
-  /// Called immediately when the results screen appears – credits stars right away.
-  void _onQuizStarsEarned(int stars) {
+  /// Called when player taps [RETOUR] from the bilan screen.
+  void _onQuizComplete() {
     setState(() {
-      _quizComplete = true; // Bilan screen is now visible→ no exit dialog
-      widget.player.stars += stars;
+      _activeQuizLevelId = null;
+      _quizComplete = false;
+      _selectedIndex = 1; // Return to map
     });
   }
+
 
   /// Called when player taps [Rejouer] from the bilan screen.
   void _onQuizReplay(int levelId) {
@@ -176,7 +201,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       LeaderboardScreen(player: widget.player),
       SettingsScreen(
         player: widget.player,
-        onUpdate: () => setState(() {}),
+        onUpdate: () {
+          setState(() {});
+          AudioService().updateSettings(widget.player);
+        },
       ),
     ];
 
@@ -193,9 +221,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
               player: widget.player,
               levelId: _activeQuizLevelId!,
               isFree: _quizIsFree,
-              onStarsEarned: (stars) => _onQuizStarsEarned(stars),
+              onResultsAvailable: (score, stars) => _onQuizResultsAvailable(score, stars),
               onReplay: () => _onQuizReplay(_activeQuizLevelId!),
-              onComplete: (score, stars) => _onQuizComplete(_activeQuizLevelId!, score, stars),
+              onComplete: (_, __) => _onQuizComplete(),
             ),
 
           // TOP RESOURCE BAR
@@ -219,7 +247,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         children: [
           // Profile - Left aligned, natural width
           GestureDetector(
-            onTap: () => _onItemTapped(4), // Jump to settings
+            onTap: () => _onItemTapped(4), // Jump to parameters
             child: _buildTopChip(
               null, 
               widget.player.pseudo, 
@@ -315,7 +343,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
               _buildNavItem(1, Icons.home_rounded, 'Accueil', Colors.orangeAccent),
               _buildNavItem(2, Icons.play_circle_filled_rounded, 'Jouer', Colors.redAccent),
               _buildNavItem(3, Icons.leaderboard_rounded, 'Classement', Colors.lightBlueAccent),
-              _buildNavItem(4, Icons.settings_rounded, 'Réglages', Colors.grey),
+              _buildNavItem(4, Icons.settings_rounded, 'Paramètres', Colors.grey),
             ],
           ),
         ),

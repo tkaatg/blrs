@@ -1,7 +1,7 @@
 # SDD US 5.2 : Paramètres & Profil Joueur
 
 - **User Story :** "En tant qu'utilisateur, je veux personnaliser mon profil et gérer mes préférences techniques (son, langue) via un menu centralisé et accessible."
-- **Statut :** À implémenter
+- **Statut :** [DONE]
 - **Référence Design :** Ergo Design System & Capture "Paramètres" (Feb 2026)
 
 ---
@@ -9,8 +9,8 @@
 ## 1. Architecture de Navigation & Accès
 
 ### 1.1 Raccourci Profil
-- **Comportement :** Un clic sur le "Top Chip" affichant le Pseudo (en haut à gauche de l'écran) doit rediriger l'utilisateur directement vers l'onglet **Paramètres** (index 4).
 - **Feedback :** Transition fluide immédiate via le `MainNavigationScreen`.
+- **Naming :** Unification du terme **"Paramètres"** dans toute l'interface (Navigation Bar, Shortcuts, Tooltips).
 
 ---
 
